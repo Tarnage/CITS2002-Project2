@@ -5,6 +5,10 @@
 
 #include "unit_test.h"
 
+/* Variable defined here */
+int numTest = 0;
+int numPass = 0;
+
 void test(char name[], char testName[], bool pass)
 {
     ++numTest;

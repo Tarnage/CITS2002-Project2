@@ -5,8 +5,8 @@
 
 #define SIZE 50
 
-int numTest = 0;
-int numPass = 0;
+int numTest;
+int numPass;
 
 extern void test(char name[], char testName[], bool pass);
 

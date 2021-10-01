@@ -9,11 +9,8 @@
 
 void test_list_add()
 {   
-    
     LIST *test_list2 = {"Test2", "Hash2", 0, NULL};
     LIST *test_list1 = {"Test1", "Hash1", 0, test_list2};
-
-    
 }
 
 
