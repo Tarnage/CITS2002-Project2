@@ -26,13 +26,13 @@ extern char *strSHA2(char *filename);
 extern	LIST	*list_new(void);
 
 //  ADD A NEW (STRING) ITEM TO AN EXISTING LIST
-extern	LIST	*list_add(  LIST *list, char *newstring);
+extern	LIST	*list_add(LIST *, char *, char *);
 
 //  DETERMINE IF A REQUIRED ITEM (A STRING) IS STORED IN A GIVEN LIST
-extern	bool	 list_find (LIST *list, char *wanted);
+extern	bool	 list_find (LIST *, char *, char *);
 
 //  PRINT EACH ITEM (A STRING) IN A GIVEN LIST TO stdout
-extern	void	 list_print(LIST *list);
+extern	void	 list_print(LIST *);
 
 //  WE DEFINE A HASHTABLE AS A (WILL BE, DYNAMICALLY ALLOCATED) ARRAY OF LISTs
 typedef	LIST * HASHTABLE;
@@ -43,7 +43,7 @@ typedef	LIST * HASHTABLE;
 extern	HASHTABLE	*hashtable_new(void);
 
 //  ADD A NEW STRING TO A GIVEN HASHTABLE
-extern	void		 hashtable_add( HASHTABLE *, char *string);
+extern	void		 hashtable_add( HASHTABLE *, char *);
 
 //  DETERMINE IF A REQUIRED STRING ALREADY EXISTS IN A GIVEN HASHTABLE
-extern	bool		 hashtable_find(HASHTABLE *, char *string);
+extern	bool		 hashtable_find(HASHTABLE *, char *);
