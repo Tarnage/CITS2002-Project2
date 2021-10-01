@@ -5,17 +5,14 @@
 
 #define SIZE 50
 
-extern int numTest;
-extern int numPass;
+extern void test(char*, char*, bool);
 
-extern void test(char name[], char testName[], bool pass);
+extern void test_string(char*, char*, char*);
 
-extern void test_string(char name[], char actual[], char expected[]);
+extern void test_NULL(char*, void*);
 
-extern void test_NULL(char name[], void *actual);
+extern void test_int(char*, char*, int, int);
 
-extern void test_int(char name[], char testName[], int actual, int expected);
-
-extern void test_bool(char name[], char testName[], bool actual, bool expected);
+extern void test_bool(char*, char*, bool, bool);
 
 extern void print_summary();
