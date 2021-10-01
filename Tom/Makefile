@@ -1,8 +1,9 @@
 # defining headers
 PROJECT = duplicates
 HEADERS = $(PROJECT).h 
+OBJ 	= strSHA.c
 TESTFILE = test_duplicates.c
-#OBJ 	= UNCOMMENT THIS ONCE WE HAVE SOURCE FILES
+
 
 C11		= cc -std=c11
 CFLAGS 	= -Wall -Werror -pedantic
@@ -17,7 +18,7 @@ $(PROJECT) : $(OBJ)
 
 # compile and run tests
 # using [make test] in terminal will run test and then delete the exe file
-test :
+test : 
 	$(C11) $(CFLAGS) -o test $(TESTFILE)
 	@./test
 	rm -f test
