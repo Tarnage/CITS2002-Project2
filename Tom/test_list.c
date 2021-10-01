@@ -8,16 +8,20 @@
 
 LIST *test_list;
 
+char *test_name1 = "Test1";
+char *test_hash1 = "Hash1";
+int   test_size1 = 69;
+
+char *test_name2 = "Test2";
+char *test_hash2 = "Hash2";
+int   test_size2 = 1223;
+
+char *test_name3 = "Test3";
+char *test_hash3 = "Hash3";
+int   test_size3 = 1028466548;
+
 void test_list_add()
 {   
-    printf("TESTING ADD\n");
-    char *test_name1 = "Test1";
-    char *test_hash1 = "Hash1";
-    int   test_size1 = 69;
-    char *test_name2 = "Test2";
-    char *test_hash2 = "Hash2";
-    int   test_size2 = 1223;
-
     test_NULL("Empty List:\t", test_list);
 
     test_list = list_add(test_list, test_name1, test_hash1, test_size1);
@@ -32,6 +36,14 @@ void test_list_add()
 }
 
 
+void test_list_find()
+{
+    test_bool("Find First:\t", "", list_find(test_list, test_name1, test_hash1), true);
+    test_bool("Does Not Exist:\t", "", list_find(test_list, test_name3, test_hash3), false);
+    test_bool("Find Second:\t", "", list_find(test_list, test_name2, test_hash2), true);
+}
+
+
 int main(int argc, char *argv[])
 {
 //  ENSURE THAT PROGRAM HAS CORRECT NUMBER OF ARGUMENTS
@@ -40,9 +52,14 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
     else {
+        /*INITIALIZE pointer*/
         test_list = list_new();
 
+        printf("TESTING ADD\n");
         test_list_add();
+        printf("TESTING_FIND\n");
+        test_list_find();
+
         print_summary();
 
         exit(EXIT_SUCCESS);

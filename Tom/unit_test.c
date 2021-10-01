@@ -64,6 +64,20 @@ void test_int(char name[], char testName[], int actual, int expected)
 }
 
 
+void test_bool(char name[], char testName[], bool actual, bool expected)
+{
+    bool pass = false;
+    if(actual == expected) pass = true;
+
+    test(name, testName, pass);
+
+    if(!pass){
+        printf("\tExpected %s got %s\n", expected ? "true":"false", actual ? "true":"false");
+    }
+
+}
+
+
 void print_summary()
 {
     printf("\n");

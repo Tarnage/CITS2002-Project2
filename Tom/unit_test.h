@@ -16,4 +16,6 @@ extern void test_NULL(char name[], void *actual);
 
 extern void test_int(char name[], char testName[], int actual, int expected);
 
+extern void test_bool(char name[], char testName[], bool actual, bool expected);
+
 extern void print_summary();

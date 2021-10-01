@@ -16,10 +16,11 @@ $(PROJECT) : $(OBJ)
 
 # compile and run tests
 # using [make test] in terminal will run test and then delete the exe file
+TEST_LIST = test_list.c unit_test.c list.c
 testlist :
-	$(C11) $(CFLAGS) -o test_list test_list.c unit_test.c list.c
+	$(C11) $(CFLAGS) -o test_list $(TEST_LIST)
 	@./test_list
-	rm -f test_list test_list.o unit_test.o list.o
+	rm -f test_list
 
 # using [make clean] in terminal will remove %.o files
 clean :
