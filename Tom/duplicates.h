@@ -1,9 +1,7 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <dirent.h>
-#include <sys/types.h>
-#include <errno.h>
-#include <sys/stat.h>
+//#include <dirent.h>
+//#include <sys/types.h>
+//#include <errno.h>
+//#include <sys/stat.h>
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -11,6 +9,7 @@
 #define CHECK_ALLOC(p) if(p == NULL) { perror(__func__); exit(EXIT_FAILURE); }
 
 //  OUR SIMPLE LIST DATATYPE - A DATA ITEM, AND A POINTER TO ANOTHER LIST
+// TODO mayb a list that holds a pointer to a stat struct
 typedef struct _list {
      char           *fname;
      char           *fhash;

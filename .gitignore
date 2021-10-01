@@ -1,2 +1,7 @@
 .vscode
 Tom/test_hash
+Tom/duplicates
+Tom/duplicates.o
+Tom/list.o
+.gitignore
+Tom/strSHA2.o

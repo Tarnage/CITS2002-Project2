@@ -20,12 +20,12 @@ LIST *list_new(void)
 
 //  DETERMINE IF A REQUIRED ITEM (A STRING) IS STORED IN A GIVEN LIST
 bool list_find(LIST *list, char *name, char *hash, int size)
-{
+{   
     while(list != NULL) {
-	if( (strcmp(list->fname, name) == 0) && (strcmp(list->fhash, hash) == 0) ){
-	    return true;
-	}
-	list	= list->next;
+        if( (strcmp(list->fname, name) == 0) && (strcmp(list->fhash, hash) == 0) ){
+            return true;
+        }
+	    list	= list->next;
     }
     return false;
 }
@@ -48,7 +48,7 @@ LIST *list_new_item(char *newfname, char *newfhash, int newfsize)
 
 //  ADD A NEW (STRING) ITEM TO AN EXISTING LIST
 LIST *list_add(LIST *list, char *newfname, char * newfhash, int newfsize)
-{   
+{    
     //TODO add more checks for dupes
     if(list_find(list, newfname, newfhash, newfsize)) {            // only add each item once
         return list;

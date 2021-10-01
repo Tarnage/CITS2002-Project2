@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <string.h>
+//#include <string.h>
 
 #include "duplicates.h"
 
@@ -36,36 +36,25 @@ HASHTABLE *hashtable_new(void)
     HASHTABLE   *new = malloc(HASHTABLE_SIZE * sizeof(LIST *));
 
     CHECK_ALLOC(new);
+
     return new;
 }
 
 //  ADD A NEW STRING TO A GIVEN HASHTABLE
 void hashtable_add(HASHTABLE *hashtable, char *fname, int fsize)
 {   
-    char *input_hash = strSHA2(fname);
-    uint32_t h   = hash_string(input_hash) % HASHTABLE_SIZE;    // choose list
-
+    // strSHA2 ONLY TAKES A VALID FILEPATH
+    char *input_hash = strSHA2(fname);                          // hash the filename and use it to get the index if hash is the same the contents is the same
+    uint32_t h   = hash_string(input_hash) % HASHTABLE_SIZE;    // thus, will be placed in the same index of a file with the same contents.
     hashtable[h] = list_add(hashtable[h], fname, input_hash, fsize);
 }
 
 //  DETERMINE IF A REQUIRED STRING ALREADY EXISTS IN A GIVEN HASHTABLE
 bool hashtable_find(HASHTABLE *hashtable, char *fname, int fsize)
 {   
+    // strSHA2 ONLY TAKES A VALID FILEPATH
     char *input_hash = strSHA2(fname);
     uint32_t h	= hash_string(input_hash) % HASHTABLE_SIZE;     // choose list
     
     return list_find(hashtable[h], fname, input_hash, fsize);
-}
-
-int main(int argc, char *argv[])
-{
-//  ENSURE THAT PROGRAM HAS CORRECT NUMBER OF ARGUMENTS
-
-    /*INITIALIZE pointer*/
-    test_hash_table = hashtable_new();
-    
-    hashtable_find(test_hash_table, "test_name1", 1200);
-
-    exit(EXIT_SUCCESS);
-
 }
