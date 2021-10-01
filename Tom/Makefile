@@ -1,16 +1,15 @@
 # defining headers
 PROJECT = duplicates
 HEADERS = $(PROJECT).h 
-OBJ 	= strSHA.c
 TESTFILE = test_duplicates.c
-
+OBJ 	= duplicates.o hashtable.o list.o strSHA2.o
 
 C11		= cc -std=c11
 CFLAGS 	= -Wall -Werror -pedantic
 
 # headers are accessed by $([headers])
 $(PROJECT) : $(OBJ)
-	$(C11) $(CFLAGS) -o $(PROJECT) $(OBJ) -lm
+	$(C11) $(CFLAGS) -o $(PROJECT) $(OBJ)
 
 #% is a wildcard
 %.o : %.c $(HEADERS)
@@ -18,7 +17,7 @@ $(PROJECT) : $(OBJ)
 
 # compile and run tests
 # using [make test] in terminal will run test and then delete the exe file
-test : 
+test : $(OBJ)
 	$(C11) $(CFLAGS) -o test $(TESTFILE)
 	@./test
 	rm -f test
