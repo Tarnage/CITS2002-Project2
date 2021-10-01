@@ -26,7 +26,7 @@ extern char *strSHA2(char *filename);
 extern	LIST	*list_new(void);
 
 //  ADD A NEW (STRING) ITEM TO AN EXISTING LIST
-extern	LIST	*list_add(LIST *, char *, char *);
+extern	LIST	*list_add(LIST *, char *, char *, int);
 
 //  DETERMINE IF A REQUIRED ITEM (A STRING) IS STORED IN A GIVEN LIST
 extern	bool	 list_find (LIST *, char *, char *);
