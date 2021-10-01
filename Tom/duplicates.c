@@ -3,7 +3,7 @@
 
 #include "duplicates.h"
 
-void usage(char *progname, int opt) {
+void usage(char *progname) {
    //fprintf(stderr, USAGE_FMT, progname);
    printf ("Usage: %s [OPTION]... [FILE]...\n", progname);
 
@@ -43,8 +43,7 @@ int main(int argc, char *argv[])
 {
 //  ENSURE THAT PROGRAM HAS CORRECT NUMBER OF ARGUMENTS
     if (argc < 2) {
-        usage(argv[0], -1);
-        exit(EXIT_FAILURE);
+        usage(argv[0]);
     }
     else {
 
