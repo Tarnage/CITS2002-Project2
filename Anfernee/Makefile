@@ -2,7 +2,7 @@
 PROJECT = duplicates
 HEADERS = $(PROJECT).h 
 TESTFILE = test_duplicates.c
-#OBJ 	= UNCOMMENT THIS ONCE WE HAVE SOURCE FILES
+OBJ 	= duplicates.o hashtable.o list.o
 
 C11		= cc -std=c11
 CFLAGS 	= -Wall -Werror -pedantic
@@ -17,7 +17,7 @@ $(PROJECT) : $(OBJ)
 
 # compile and run tests
 # using [make test] in terminal will run test and then delete the exe file
-test :
+test : $(OBJ)
 	$(C11) $(CFLAGS) -o test $(TESTFILE)
 	@./test
 	rm -f test
