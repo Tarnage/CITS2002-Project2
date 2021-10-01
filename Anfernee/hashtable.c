@@ -40,7 +40,7 @@ HASHTABLE *hashtable_new(void)
 //  ADD A NEW STRING TO A GIVEN HASHTABLE
 void hashtable_add(HASHTABLE *hashtable, char *string)
 {
-    uint32_t h   = hash_string(string) % HASHTABLE_SIZE;    // choose list
+    uint32_t h   = hash_string(strSHA2(string)) % HASHTABLE_SIZE;    // choose list
 
     hashtable[h] = list_add(hashtable[h], string);
 }
@@ -48,7 +48,7 @@ void hashtable_add(HASHTABLE *hashtable, char *string)
 //  DETERMINE IF A REQUIRED STRING ALREADY EXISTS IN A GIVEN HASHTABLE
 bool hashtable_find(HASHTABLE *hashtable, char *string)
 {
-    uint32_t h	= hash_string(string) % HASHTABLE_SIZE;     // choose list
+    uint32_t h	= hash_string(strSHA2(string)) % HASHTABLE_SIZE;     // choose list
 
     return list_find(hashtable[h], string);
 }

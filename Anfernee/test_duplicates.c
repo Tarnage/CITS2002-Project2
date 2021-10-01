@@ -79,22 +79,10 @@ void print_summary()
 }
 
 
-void example_test()
+void test_list_add()
 {   
-    char pref[SIZE]     = "Example Test: ";
-
-    char string_1[SIZE] = "Hello";
-    char string_2[SIZE] = "World";
-    test_string(pref, strcat(string_1, string_2), "HelloWorld");
-
-    char *testName1 = "2 + 3";
-    int a = 2;
-    int b = 3;
-    test_int(pref, testName1, a + b, 5);
-
-    char *testName2 = "FAIL TEST";
-    int c = 2;
-    test_int(pref, testName2, c, 5);
+    LIST *test_list1 = {"Test1", };
+    LIST *test_list2 = {};
 }
 
 

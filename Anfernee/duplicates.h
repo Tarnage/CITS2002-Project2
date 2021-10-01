@@ -12,6 +12,8 @@
 //  OUR SIMPLE LIST DATATYPE - A DATA ITEM, AND A POINTER TO ANOTHER LIST
 typedef struct _list {
      char           *string;
+     char           *hash;
+     int            size;
      struct _list   *next;
 } LIST;
 
