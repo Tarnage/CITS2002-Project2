@@ -21,6 +21,7 @@ int   test_size3 = 1028466548;
 
 void test_hash_add()
 {   
+    
     test_bool("Empty HashTable:\t", "", hashtable_find(test_hash_table, test_name1, test_size1), false);
     //hashtable_add(test_hash_table, test_name1, test_size1);
     //hashtable_find(test_hash_table, test_name1, test_size1);

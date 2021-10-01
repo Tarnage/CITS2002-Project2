@@ -17,6 +17,8 @@
 //
 //  see:  https://en.cppreference.com/w/c/types/integer
 
+HASHTABLE *test_hash_table;
+
 uint32_t hash_string(char *string)
 {
     uint32_t hash = 0;
@@ -51,6 +53,19 @@ bool hashtable_find(HASHTABLE *hashtable, char *fname, int fsize)
 {   
     char *input_hash = strSHA2(fname);
     uint32_t h	= hash_string(input_hash) % HASHTABLE_SIZE;     // choose list
-
+    
     return list_find(hashtable[h], fname, input_hash, fsize);
+}
+
+int main(int argc, char *argv[])
+{
+//  ENSURE THAT PROGRAM HAS CORRECT NUMBER OF ARGUMENTS
+
+    /*INITIALIZE pointer*/
+    test_hash_table = hashtable_new();
+    
+    hashtable_find(test_hash_table, "test_name1", 1200);
+
+    exit(EXIT_SUCCESS);
+
 }

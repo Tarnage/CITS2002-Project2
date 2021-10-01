@@ -7,6 +7,7 @@
 #include "unit_test.h"
 
 LIST *test_list;
+LIST *test_empty;
 
 char *test_name1 = "Test1";
 char *test_hash1 = "Hash1";
@@ -40,7 +41,8 @@ void test_list_add()
 
 
 void test_list_find()
-{
+{   
+    test_bool("NULL list:\t", "", list_find(test_empty, test_name1, test_hash1, test_size1), false);
     test_bool("Find First:\t", "", list_find(test_list, test_name1, test_hash1, test_size1), true);
     test_bool("Does Not Exist:\t", "", list_find(test_list, test_name3, test_hash3, test_size3), false);
     test_bool("Find Second:\t", "", list_find(test_list, test_name2, test_hash2, test_size2), true);
@@ -57,6 +59,7 @@ int main(int argc, char *argv[])
     else {
         /*INITIALIZE pointer*/
         test_list = list_new();
+        test_empty = list_new();
 
         printf("TESTING NULL\n");
         test_list_NULL();

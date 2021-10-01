@@ -22,7 +22,7 @@ LIST *list_new(void)
 bool list_find(LIST *list, char *name, char *hash, int size)
 {
     while(list != NULL) {
-	if( (strcmp(list->fname, name) == 0) && (strcmp(list->fhash, hash)) ){
+	if( (strcmp(list->fname, name) == 0) && (strcmp(list->fhash, hash) == 0) ){
 	    return true;
 	}
 	list	= list->next;

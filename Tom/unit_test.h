@@ -5,6 +5,11 @@
 
 #define SIZE 50
 
+#ifndef HASHTABLE_SIZE
+#define HASHTABLE_SIZE 2551
+#endif
+
+
 extern void test(char*, char*, bool);
 
 extern void test_string(char*, char*, char*);
