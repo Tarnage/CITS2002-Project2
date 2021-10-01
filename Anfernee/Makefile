@@ -2,14 +2,14 @@
 PROJECT = duplicates
 HEADERS = $(PROJECT).h 
 TESTFILE = test_duplicates.c
-OBJ 	= duplicates.o hashtable.o list.o
+OBJ 	= duplicates.o hashtable.o list.o strSHA2.o
 
 C11		= cc -std=c11
 CFLAGS 	= -Wall -Werror -pedantic
 
 # headers are accessed by $([headers])
 $(PROJECT) : $(OBJ)
-	$(C11) $(CFLAGS) -o $(PROJECT) $(OBJ) -lm
+	$(C11) $(CFLAGS) -o $(PROJECT) $(OBJ)
 
 #% is a wildcard
 %.o : %.c $(HEADERS)

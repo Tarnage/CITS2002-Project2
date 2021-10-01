@@ -38,17 +38,19 @@ HASHTABLE *hashtable_new(void)
 }
 
 //  ADD A NEW STRING TO A GIVEN HASHTABLE
-void hashtable_add(HASHTABLE *hashtable, char *string)
-{
-    uint32_t h   = hash_string(strSHA2(string)) % HASHTABLE_SIZE;    // choose list
+void hashtable_add(HASHTABLE *hashtable, char *fname)
+{   
+    char *input_hash = strSHA2(fname);
+    uint32_t h   = hash_string(input_hash) % HASHTABLE_SIZE;    // choose list
 
-    hashtable[h] = list_add(hashtable[h], string);
+    hashtable[h] = list_add(hashtable[h], fname, input_hash);
 }
 
 //  DETERMINE IF A REQUIRED STRING ALREADY EXISTS IN A GIVEN HASHTABLE
-bool hashtable_find(HASHTABLE *hashtable, char *string)
-{
-    uint32_t h	= hash_string(strSHA2(string)) % HASHTABLE_SIZE;     // choose list
+bool hashtable_find(HASHTABLE *hashtable, char *fname)
+{   
+    char *input_hash = strSHA2(fname);
+    uint32_t h	= hash_string(input_hash) % HASHTABLE_SIZE;     // choose list
 
-    return list_find(hashtable[h], string);
+    return list_find(hashtable[h], fname, input_hash);
 }
