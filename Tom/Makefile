@@ -1,7 +1,7 @@
 # defining headers
 PROJECT = duplicates
 HEADERS = $(PROJECT).h
-OBJ 	= duplicates.o hashtable.o list.o strSHA2.o
+OBJ 	= duplicates.o hashtable.o list.o strSHA2.o read_dir.o
 
 C11		= cc -std=c11
 CFLAGS 	= -Wall -Werror -pedantic
@@ -29,6 +29,13 @@ testhash :
 	$(C11) $(CFLAGS) -o $(HASH_EXE) $(TEST_HASH)
 	@./$(HASH_EXE)
 	rm -f $(HASH_EXE)
+
+TEST_READ = read_dir.c unit_test.c test_read_dir.c
+READ_EXE  = test_read
+testreaddir :
+	$(C11) $(CFLAGS) -o $(READ_EXE) $(TEST_READ)
+	@./$(READ_EXE)
+	rm -f $(READ_EXE)
 
 # using [make clean] in terminal will remove %.o files
 clean :
