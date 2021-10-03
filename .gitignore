@@ -5,3 +5,5 @@ Tom/duplicates.o
 Tom/list.o
 .gitignore
 Tom/strSHA2.o
+Tom/hashtable.o
+Tom/read_dir.o
