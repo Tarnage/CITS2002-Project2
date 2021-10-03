@@ -64,6 +64,13 @@ bool hashtable_find(HASHTABLE *hashtable, FILES *file_stats)
 }
 
 // DETERMINE IF FILE IS A DUPLICATE
+// TODO finish logic of finding a dupe
+// things to consider
+// - do we want a return of the duplicate file
+// - increments of ufiles and ubytes, how?
+// - what params do want just HASHTABLE?
+// - do we want to loop through the whole hashtable after we read in the files or during?
+// - (CHILLI) how do we link() and unlink() a duplicate file?
 bool hashtable_isDupe(HASHTABLE *hashtable, FILES *file_stats)
 {   
     // strSHA2 ONLY TAKES A VALID FILEPATH
@@ -72,7 +79,7 @@ bool hashtable_isDupe(HASHTABLE *hashtable, FILES *file_stats)
     file_stats->hash = strdup(input_hash);
     uint32_t h	= hash_string(input_hash) % HASHTABLE_SIZE;     // choose list
     
-    return list_find(hashtable[h], file_stats);
+    return list_find_dupe(hashtable[h], file_stats);
 }
 
 
