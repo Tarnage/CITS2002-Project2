@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include  <getopt.h>
 
 #include "duplicates.h"
 
@@ -42,10 +43,40 @@ Locate and report duplicate files in, and below, a named directory.\n\
 int main(int argc, char *argv[])
 {
 //  ENSURE THAT PROGRAM HAS CORRECT NUMBER OF ARGUMENTS
-    if (argc > 2) {
+    if (argc > 3) {
         usage(argv[0]);
     }
     else {
+
+    int		opt;
+
+//  PROCESS COMMAND-LINE OPTIONS
+    opterr	= 0;
+    while((opt = getopt(argc, argv, OPTLIST)) != -1) {
+        switch (opt) {
+            case 'a':
+                printf("Option [-a] was selected\n");
+                break;
+            case 'A':
+                printf("Option [-A] was selected\n");
+                break;
+            case 'f':
+                printf("Option [-f] was selected\n");
+                break;
+            case 'l':
+                printf("Option [-l] was selected\n");
+                break;
+            case 'm':
+                printf("Option [-m] was selected\n");
+                break;
+            case 'q':
+                printf("Option [-q] was selected\n");
+                break;
+            default: /* '?' */
+                usage(argv[0]);
+                exit(EXIT_FAILURE);
+        }
+    }
 //  INITIALIZE HASHTABLE FOR CHECKING DUPLICATES
     HASHTABLE   *hash_table = hashtable_new();
 
