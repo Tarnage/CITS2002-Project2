@@ -59,6 +59,7 @@ int main(int argc, char *argv[])
 
     hashtable_print(hash_table);
     
+    print_dir_summary();
 
 //  TERMINATE PROGRAM, INDICATING SUCCESS
         exit(EXIT_SUCCESS);
