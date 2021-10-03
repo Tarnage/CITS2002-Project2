@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
 {   
     test_dir_scan();
     print_dir_summary();
+    list_all_files();
     exit(EXIT_SUCCESS);
 
     return 0;
