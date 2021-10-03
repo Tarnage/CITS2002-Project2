@@ -86,4 +86,14 @@ void print_dir_summary()
     printf("ubytes:\t%i\n", ubytes);
 }
 
+void list_all_files(void)
+{
+    for(int n=0 ; n<nfiles ; ++n) {
+        char *english = ctime(&files[n].mtime);
+
+        english[24] = '\0';		// remove pesky trailing newline
+        printf( "%s\t%i\t%s\n", english, files[n].bytesize, files[n].pathname );
+    }
+}
+
 
