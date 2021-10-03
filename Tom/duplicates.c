@@ -1,8 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include  <getopt.h>
+#include <getopt.h>
+#include <stdbool.h>
 
 #include "duplicates.h"
+
+// GLOBALs
+bool ignore_mode = true;
+
+
+
 
 void usage(char *progname) {
    //fprintf(stderr, USAGE_FMT, progname);
@@ -56,6 +63,7 @@ int main(int argc, char *argv[])
         switch (opt) {
             case 'a':
                 printf("Option [-a] was selected\n");
+                ignore_mode = false;
                 break;
             case 'A':
                 printf("Option [-A] was selected\n");
@@ -82,6 +90,7 @@ int main(int argc, char *argv[])
 
     //scan_directory(".");
     scan_dir_recur("/mnt/d/Github/CITS2002-Project2/tests");
+    //scan_directory("/mnt/d/Github/CITS2002-Project2/Tom");
 
 //  ADD ALL FILES TO hash_table TO CHECK FOR DUPLICATES
   for(int i = 0; i < nfiles; ++i){
@@ -89,7 +98,7 @@ int main(int argc, char *argv[])
     ++files;
   }
 
-    hashtable_print(hash_table);
+    //hashtable_print(hash_table);
     
     print_dir_summary();
 

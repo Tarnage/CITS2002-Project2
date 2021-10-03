@@ -11,6 +11,7 @@
 //  DEFINE OPTLIST HERE
 #define	OPTLIST		"aAfhlmq"
 
+
 // -----------------------------------------------------------------------------------------------
 // DEFINED TYPEDEFS
 
@@ -40,6 +41,9 @@ int             nfiles;  // nfiles incremented in read_dir.c
 int             nbytes;  // nbytes incremented in read_dir.c
 int             ufiles;  // ufiles calculated in duplicates.c
 int             ubytes;  // ubytes calculated in duplicates.c
+
+// DEFINED in duplicates.c
+bool           ignore_mode;
 
 // -----------------------------------------------------------------------------------------------
 
@@ -99,6 +103,9 @@ extern    void      scan_directory(char *);
 
 // SCANS DIRECTORY RECURSIVELY 
 extern    void      scan_dir_recur(char *);
+
+// SCANS DIRECTORY RECURSIVELY 
+extern    bool      file_ignored(const char *);
 
 // PRINTS SUMMARY OF THE FILES FOUND
 extern    void      print_dir_summary(void);

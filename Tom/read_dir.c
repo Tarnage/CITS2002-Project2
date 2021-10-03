@@ -29,6 +29,11 @@ int             ufiles  = 0;
 // TOTAL BYTES OF UNIQUE FILES
 int             ubytes  = 0;
 
+bool file_ignored(const char *name)
+{   
+    return ignore_mode && ((strcmp(name, ".") == 0) || (strcmp(name, "..") == 0) || (name[0] == '.'));
+}
+
 
 void scan_directory(char *dirname)
 {
@@ -44,7 +49,8 @@ void scan_directory(char *dirname)
 
 //  READ FROM THE REQUIRED DIRECTORY, UNTIL WE REACH ITS END
     while((dp = readdir(dirp)) != NULL) {
-        if( (strcmp(dp->d_name, ".") != 0) && (strcmp(dp->d_name, "..") != 0) ){  
+
+        if( (strcmp(dp->d_name, ".") != 0) && (strcmp(dp->d_name, "..") != 0) && ((dp->d_name)[0] != '.') ){  
             struct stat     stat_info;
             char            pathname[MAXPATHLEN];
 
@@ -97,47 +103,49 @@ void scan_dir_recur(char *dirname)
     if((getcwd(current_path, MAXPATHLEN)) == NULL)
         exit(EXIT_FAILURE);
 
+
 //  READ FROM THE REQUIRED DIRECTORY, UNTIL WE REACH ITS END
     while((dp = readdir(dirp)) != NULL) {
     
         struct stat     stat_info;
         char            pathname[MAXPATHLEN];
 
-        if( (strcmp(dp->d_name, ".") != 0) && (strcmp(dp->d_name, "..") != 0) ){
-            //FOR TESTING
-            //printf("d_type: %i\tis_reg: %i\t%s\n", S_ISDIR(stat_info.st_mode), S_ISREG(stat_info.st_mode), dp->d_name);
+        //FOR TESTING
+        //printf("d_type: %i\tis_reg: %i\t%s\n", S_ISDIR(stat_info.st_mode), S_ISREG(stat_info.st_mode), dp->d_name);
 
 //  SENDS FORMATTED STRING TO STRING POINTER POINTED BY pathname
-            sprintf(pathname, "%s/%s", dirname, dp->d_name);
+        sprintf(pathname, "%s/%s", dirname, dp->d_name);
 
 //  DETERMINE ATTRIBUTES OF THIS DIRECTORY ENTRY
-            if(stat(pathname, &stat_info) != 0) {
-                perror( pathname );
-                exit(EXIT_FAILURE);
-            }
+        if(stat(pathname, &stat_info) != 0) {
+            perror( pathname );
+            exit(EXIT_FAILURE);
+        }
 
 //  CHECKS IF FILE IS A DIRECTORY AND RECURSIVELY READS FILES 
-            if(S_ISDIR(stat_info.st_mode)){
-                scan_dir_recur(pathname);
-            }
-            else{
-                //printf("d_type: %i\tis_reg: %i\t%s\n", S_ISDIR(stat_info.st_mode), S_ISREG(stat_info.st_mode), dp->d_name);
-    //  EXTEND OUR ARRAY OF STRUCTURES BY ONE ELEMENT
-                files                   = realloc(files, (nfiles+1)*sizeof(files[0]));
-                CHECK_ALLOC(files);			// ensure allocation was OK
+        if(S_ISDIR(stat_info.st_mode) && 
+            (strcmp(dp->d_name, ".") != 0) && 
+                (strcmp(dp->d_name, "..") != 0)){
+            scan_dir_recur(pathname);
+        }
+        else if ( !file_ignored(dp->d_name) ){
+            printf("d_type: %i\tis_reg: %i\t%s\n", S_ISDIR(stat_info.st_mode), S_ISREG(stat_info.st_mode), dp->d_name);
+//  EXTEND OUR ARRAY OF STRUCTURES BY ONE ELEMENT
+            files                   = realloc(files, (nfiles+1)*sizeof(files[0]));
+            CHECK_ALLOC(files);			// ensure allocation was OK
 
-    //  REMEMBER (COPY) THIS ELEMENT'S RELATIVE PATHNAME
-                files[nfiles].pathname  = strdup(pathname);
-                CHECK_ALLOC(files[nfiles].pathname);	// ensure allocation was OK
+//  REMEMBER (COPY) THIS ELEMENT'S RELATIVE PATHNAME
+            files[nfiles].pathname  = strdup(pathname);
+            CHECK_ALLOC(files[nfiles].pathname);	// ensure allocation was OK
 
-    //  REMEMBER THIS ELEMENT'S MODIFICATION TIME
-                files[nfiles].mtime     = stat_info.st_mtime;     // TODO maybe wont need this
-                files[nfiles].bytesize  = stat_info.st_size;      // its byte size
-                nbytes                 += stat_info.st_size;      // add to total bytes so far
-                ++nfiles;
-            }
+//  REMEMBER THIS ELEMENT'S MODIFICATION TIME
+            files[nfiles].mtime     = stat_info.st_mtime;     // TODO maybe wont need this
+            files[nfiles].bytesize  = stat_info.st_size;      // its byte size
+            nbytes                 += stat_info.st_size;      // add to total bytes so far
+            ++nfiles;
         }
     }
+    
 //  CLOSE THE DIRECTORY
     closedir(dirp);
 }
