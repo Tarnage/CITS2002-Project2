@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
     ++files;
   }
 
-    //hashtable_print(hash_table);
+    hashtable_print(hash_table);
     
     print_dir_summary();
 
