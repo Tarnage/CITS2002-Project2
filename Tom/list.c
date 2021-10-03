@@ -32,10 +32,10 @@ bool list_find_dupe(LIST *list, FILES *incoming_file)
 
 
 //  DETERMINE IF A REQUIRED ITEM (A FILE) IS STORED IN A GIVEN LIST
-bool list_find(LIST *list, FILES *incoming_file)
+bool list_find(LIST *list, char *incoming_pathname)
 {   
     while(list != NULL) {
-        if( (strcmp(list->file_stats->pathname, incoming_file->pathname) == 0) ){
+        if( (strcmp(list->file_stats->pathname, incoming_pathname) == 0) ){
             return true;
         }
 	    list	= list->next;
@@ -58,8 +58,7 @@ LIST *list_new_item(FILES *new_file)
 //  ADD A NEW (STRING) ITEM TO AN EXISTING LIST
 LIST *list_add(LIST *list, FILES *new_file)
 {    
-    //TODO add more checks for dupes
-    if(list_find(list, new_file)) {            // only add each item once
+    if(list_find(list, new_file->pathname)) {            // only add each item once
         return list;
     }
     else {                                      // add new item to head of list

@@ -54,13 +54,13 @@ void hashtable_add(HASHTABLE *hashtable, FILES *file_stats)
 }
 
 //  DETERMINE IF A FILE STRUCT ALREADY EXISTS IN A GIVEN HASHTABLE
-bool hashtable_find(HASHTABLE *hashtable, FILES *file_stats)
+bool hashtable_find(HASHTABLE *hashtable, char *pathname)
 {   
     // strSHA2 ONLY TAKES A VALID FILEPATH
-    char *input_hash = strSHA2(file_stats->pathname);
+    char *input_hash = strSHA2(pathname);
     uint32_t h	= hash_string(input_hash) % HASHTABLE_SIZE;     // choose list
     
-    return list_find(hashtable[h], file_stats);
+    return list_find(hashtable[h], pathname);
 }
 
 // DETERMINE IF FILE IS A DUPLICATE
@@ -71,9 +71,10 @@ bool hashtable_find(HASHTABLE *hashtable, FILES *file_stats)
 // - what params do want just HASHTABLE?
 // - do we want to loop through the whole hashtable after we read in the files or during?
 // - (CHILLI) how do we link() and unlink() a duplicate file?
+// - . and .. have the same hash values. are they considered duplicate? and do we count them as files, do we count their byte sizes
 bool hashtable_isDupe(HASHTABLE *hashtable, FILES *file_stats)
 {   
-    // strSHA2 ONLY TAKES A VALID FILEPATH
+    // hash should already be calculated no need to re-hash
     char *input_hash = strSHA2(file_stats->pathname);
     // copy the hash to the file stats
     file_stats->hash = strdup(input_hash);
