@@ -42,10 +42,23 @@ Locate and report duplicate files in, and below, a named directory.\n\
 int main(int argc, char *argv[])
 {
 //  ENSURE THAT PROGRAM HAS CORRECT NUMBER OF ARGUMENTS
-    if (argc < 2) {
+    if (argc > 2) {
         usage(argv[0]);
     }
     else {
+//  INITIALIZE HASHTABLE FOR CHECKING DUPLICATES
+    HASHTABLE   *hash_table = hashtable_new();
+
+    scan_directory(".");
+
+//  ADD ALL FILES TO hash_table TO CHECK FOR DUPLICATES
+  for(int i = 0; i < nfiles; ++i){
+    hashtable_add(hash_table, files);
+    ++files;
+  }
+
+    hashtable_print(hash_table);
+    
 
 //  TERMINATE PROGRAM, INDICATING SUCCESS
         exit(EXIT_SUCCESS);
