@@ -48,6 +48,8 @@ void scan_directory(char *dirname)
 
 //  SENDS FORMATTED STRING TO STRING POINTER POINTED BY pathname
         sprintf(pathname, "%s/%s", dirname, dp->d_name);
+        // FOR TESTING
+        printf("%s/%s\n", dirname, dp->d_name);
 
 //  DETERMINE ATTRIBUTES OF THIS DIRECTORY ENTRY
         if(stat(pathname, &stat_info) != 0) {
@@ -65,7 +67,7 @@ void scan_directory(char *dirname)
 
 //  REMEMBER THIS ELEMENT'S MODIFICATION TIME
         files[nfiles].mtime     = stat_info.st_mtime;     // TODO maybe wont need this
-        files[nfiles].bytesize  = stat_info.st_size;      // remeber its byte size
+        files[nfiles].bytesize  = stat_info.st_size;      // its byte size
         nbytes                 += stat_info.st_size;      // add to total bytes so far
         ++nfiles;
     }

@@ -7,8 +7,15 @@
 #include "unit_test.h"
 
 
+void test_dir_scan()
+{   
+    scan_directory(".");
+}
+
+
 int main(int argc, char *argv[])
-{
+{   
+    test_dir_scan();
     print_dir_summary();
     exit(EXIT_SUCCESS);
 
