@@ -2,9 +2,14 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
-//#include <string.h>
+#include <string.h>
 
 #include "duplicates.h"
+
+#if	defined(__linux__)
+extern	char	*strdup(char *string);
+#endif
+
 
 //  RESEARCH SHOWS THAT USING PRIME-NUMBERS CAN IMPROVE PERFORMANCE
 //  c.f.  https://www.quora.com/Why-should-the-size-of-a-hash-table-be-a-prime-number
@@ -16,9 +21,6 @@
 //  AND RETURNS AN UNSIGNED 32-BIT INTEGER AS ITS RESULT
 //
 //  see:  https://en.cppreference.com/w/c/types/integer
-
-HASHTABLE *test_hash_table;
-
 uint32_t hash_string(char *string)
 {
     uint32_t hash = 0;
@@ -41,20 +43,43 @@ HASHTABLE *hashtable_new(void)
 }
 
 //  ADD A NEW STRING TO A GIVEN HASHTABLE
-void hashtable_add(HASHTABLE *hashtable, char *fname, int fsize)
+void hashtable_add(HASHTABLE *hashtable, FILES *file_stats)
 {   
     // strSHA2 ONLY TAKES A VALID FILEPATH
-    char *input_hash = strSHA2(fname);                          // hash the filename and use it to get the index if hash is the same the contents is the same
+    char *input_hash = strSHA2(file_stats->pathname);           // hash the filename and use it to get the index if hash is the same the contents is the same
+    // copy the hash to the file stats
+    file_stats->hash = strdup(input_hash);
     uint32_t h   = hash_string(input_hash) % HASHTABLE_SIZE;    // thus, will be placed in the same index of a file with the same contents.
-    hashtable[h] = list_add(hashtable[h], fname, input_hash, fsize);
+    hashtable[h] = list_add(hashtable[h], file_stats);
 }
 
-//  DETERMINE IF A REQUIRED STRING ALREADY EXISTS IN A GIVEN HASHTABLE
-bool hashtable_find(HASHTABLE *hashtable, char *fname, int fsize)
+//  DETERMINE IF A FILE STRUCT ALREADY EXISTS IN A GIVEN HASHTABLE
+bool hashtable_find(HASHTABLE *hashtable, FILES *file_stats)
 {   
     // strSHA2 ONLY TAKES A VALID FILEPATH
-    char *input_hash = strSHA2(fname);
+    char *input_hash = strSHA2(file_stats->pathname);
     uint32_t h	= hash_string(input_hash) % HASHTABLE_SIZE;     // choose list
     
-    return list_find(hashtable[h], fname, input_hash, fsize);
+    return list_find(hashtable[h], file_stats);
+}
+
+// DETERMINE IF FILE IS A DUPLICATE
+bool hashtable_isDupe(HASHTABLE *hashtable, FILES *file_stats)
+{   
+    // strSHA2 ONLY TAKES A VALID FILEPATH
+    char *input_hash = strSHA2(file_stats->pathname);
+    // copy the hash to the file stats
+    file_stats->hash = strdup(input_hash);
+    uint32_t h	= hash_string(input_hash) % HASHTABLE_SIZE;     // choose list
+    
+    return list_find(hashtable[h], file_stats);
+}
+
+
+//  PRINTS HASHTABLE CONTENTS
+void hashtable_print(HASHTABLE *hashtable)
+{
+    for(int i = 0; i < HASHTABLE_SIZE; ++i){
+        list_print(hashtable[i]);
+    }
 }
