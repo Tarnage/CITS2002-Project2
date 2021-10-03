@@ -95,10 +95,13 @@ extern    uint32_t   hash_string(char *);
 //  THESE FUNCTIONS ARE DECLARED HERE, AND DEFINED IN read_dir.c :
 
 // READS DIRECTORY AND START COUNTS
-extern    void scan_directory(char *);
+extern    void      scan_directory(char *);
+
+// SCANS DIRECTORY RECURSIVELY 
+extern    void      scan_dir_recur(char *);
 
 // PRINTS SUMMARY OF THE FILES FOUND
-extern    void print_dir_summary(void);
+extern    void      print_dir_summary(void);
 
 // PRINTS ALL FILES FOUND
-extern    void list_all_files(void);
+extern    void      list_all_files(void);

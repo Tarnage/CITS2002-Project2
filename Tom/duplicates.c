@@ -80,7 +80,8 @@ int main(int argc, char *argv[])
 //  INITIALIZE HASHTABLE FOR CHECKING DUPLICATES
     HASHTABLE   *hash_table = hashtable_new();
 
-    scan_directory(".");
+    //scan_directory(".");
+    scan_dir_recur("/mnt/d/Github/CITS2002-Project2/tests");
 
 //  ADD ALL FILES TO hash_table TO CHECK FOR DUPLICATES
   for(int i = 0; i < nfiles; ++i){
@@ -88,7 +89,7 @@ int main(int argc, char *argv[])
     ++files;
   }
 
-    hashtable_print(hash_table);
+    //hashtable_print(hash_table);
     
     print_dir_summary();
 
