@@ -65,8 +65,8 @@ extern	LIST	     *list_new(void);
 //  ADD A NEW (STRING) ITEM TO AN EXISTING LIST
 extern	LIST	     *list_add(LIST *, FILES *);
 
-//  DETERMINE IF A REQUIRED ITEM (A FILES STRUCT) IS DUPLICATE
-extern	bool	     list_find_dupe(LIST *, FILES *);
+//  RETURN BYTE COUNT OF DUPES
+extern	int 	     list_count_dupe(LIST *);
 
 //  DETERMINE IF A REQUIRED ITEM (A FILE) IS STORED IN A GIVEN LIST
 extern    bool      list_find(LIST *list, char *);
@@ -87,7 +87,7 @@ extern	void		 hashtable_add( HASHTABLE *, FILES *);
 extern	bool		 hashtable_find(HASHTABLE *, char *);
 
 // DETERMINE IF FILE IS A DUPLICATE
-extern    bool       hashtable_isDupe(HASHTABLE *, FILES *);
+extern    int        hashtable_count_dupes(HASHTABLE *);
 
 //  PRINTS HASHTABLE CONTENTS
 extern    void       hashtable_print(HASHTABLE *);

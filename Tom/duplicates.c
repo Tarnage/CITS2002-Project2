@@ -93,12 +93,16 @@ int main(int argc, char *argv[])
     //scan_directory("/mnt/d/Github/CITS2002-Project2/Tom");
 
 //  ADD ALL FILES TO hash_table TO CHECK FOR DUPLICATES
-  for(int i = 0; i < nfiles; ++i){
-    hashtable_add(hash_table, files);
-    ++files;
-  }
+    for(int i = 0; i < nfiles; ++i){
+        hashtable_add(hash_table, files);
+        ++files;
+    }
 
-    //hashtable_print(hash_table);
+    hashtable_print(hash_table);
+
+    ubytes = nbytes - hashtable_count_dupes(hash_table);
+    
+    ufiles = nfiles - ufiles;
     
     print_dir_summary();
 
