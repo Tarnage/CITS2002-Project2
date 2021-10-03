@@ -7,7 +7,9 @@
 #include <stdint.h>
 
 //  A HELPFUL PREPROCESSOR MACRO TO CHECK IF ALLOCATIONS WERE SUCCESSFUL
-#define CHECK_ALLOC(p) if(p == NULL) { perror(__func__); exit(EXIT_FAILURE); }
+#define   CHECK_ALLOC(p) if(p == NULL) { perror(__func__); exit(EXIT_FAILURE); }
+//  DEFINE OPTLIST HERE
+#define	OPTLIST		"aAfhlmq"
 
 // -----------------------------------------------------------------------------------------------
 // DEFINED TYPEDEFS
