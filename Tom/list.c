@@ -34,17 +34,37 @@ bool list_is_dupe(LIST *list, LIST *incoming_list)
 //  RETURN BYTE COUNT OF DUPES
 void list_count_dupe(LIST *list)
 {   
+    bool added_dupe = false;
+    LIST *new_dupes = list_new();
+
     while(list != NULL && list->next != NULL) {
+        
         LIST *pList = list;
         list = list->next;
+
         if( list_is_dupe(list, pList) ){
+            // TODO MAKE IT MORE EFFICIENT, CURRENT TRYS TO ADD file_stats THAT HAVE ALREADY BEEN CHECKED AND ADDED
+            // BUT IT WORKS!! ie. if plist = 1, list = 2, adds both to newDupes and then if plist = 2 and list = 3 trys to add 2 again.
+            new_dupes = list_add(new_dupes, list->file_stats);
+            new_dupes = list_add(new_dupes, pList->file_stats);
+
+            added_dupe = true;
             // increment ubytes and u files
             ubytes += list->file_stats->bytesize;
-            ++ufiles; 
-            //printf("BYTES: %i\n", bytes);
+            ++ufiles;
         }
 	    list	= list->next;
         pList   = pList->next;
+    }
+
+    if( added_dupe ){
+        // realloc dupes array
+        dupes = realloc(dupes, (dupe_count + 1)*sizeof(FILES));
+        CHECK_ALLOC(dupes);
+        // list to dupes
+        dupes[dupe_count] = new_dupes;
+        //increment dupe count
+        ++dupe_count;
     }
 }
 

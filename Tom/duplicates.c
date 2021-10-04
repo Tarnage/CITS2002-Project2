@@ -8,7 +8,8 @@
 // GLOBALs
 bool ignore_mode = true;
 bool quiet_mode  = false;
-
+bool list_dupes  = false;
+LIST **dupes     = NULL;
 
 
 void usage(char *progname) {
@@ -47,6 +48,19 @@ Locate and report duplicate files in, and below, a named directory.\n\
 }
 
 
+//  PRINT EACH DUPE (THE RELATIVE PATHNAME) IN A GIVEN LIST TO stdout
+void print_dupes(LIST *list)
+{
+    if(list != NULL) {
+        while(list != NULL) {
+	    printf("%s\t", list->file_stats->pathname );
+	    list	= list->next;
+        }
+        printf("\n");
+    }
+}
+
+
 void quiet_mode_summary()
 {   
     // IF nbytes DOES NOT EQUAL ubytes WE HAVE DUPLICATES
@@ -62,7 +76,7 @@ void quiet_mode_summary()
 int main(int argc, char *argv[])
 {
 //  ENSURE THAT PROGRAM HAS CORRECT NUMBER OF ARGUMENTS
-    if (argc > 3) {
+    if (argc > 10) {
         usage(argv[0]);
     }
     else {
@@ -85,6 +99,7 @@ int main(int argc, char *argv[])
                 break;
             case 'l':
                 printf("Option [-l] was selected\n");
+                list_dupes = true;
                 break;
             case 'm':
                 printf("Option [-m] was selected\n");
@@ -101,9 +116,9 @@ int main(int argc, char *argv[])
 //  INITIALIZE HASHTABLE FOR CHECKING DUPLICATES
     HASHTABLE   *hash_table = hashtable_new();
 
-    //scan_directory(".");
+    scan_dir_recur("..");
     //scan_dir_recur("/mnt/d/Github/CITS2002-Project2/tests");
-    scan_dir_recur("/mnt/d/Github/CITS2002-Project2/Tom");
+    //scan_dir_recur("/mnt/d/Github/CITS2002-Project2/Tom");
 
 //  ADD ALL FILES TO hash_table TO CHECK FOR DUPLICATES
     FILES *ptemp = files;               // store start of files;
@@ -118,9 +133,19 @@ int main(int argc, char *argv[])
     hashtable_count_dupes(hash_table);
     
     ufiles = nfiles - ufiles;
-    
-// MORE COMMENTS TO COME
+    ubytes = nbytes - ubytes;
+
+// PRINTS DUPE IF OPT -l IS SELECTED
+    if( list_dupes ){
+        for(int i = 0; i < dupe_count; ++i){
+            print_dupes(dupes[i]);
+        }
+    }
+
 //  PRINT SUMMARY IFF quiet_mode = false
+//  TODO THINK ABOUT CONTROL FLOW
+//  IF quiet_mode == true THIS WILL EXIT PROGRAM AND NOTHING
+//  BELOW WILL EXECUTE. ie. THINK ABOUT - IF WE WANT MULTIPLE OPTIONS TO EXECUTE 
     if( quiet_mode ){
         quiet_mode_summary();
     }

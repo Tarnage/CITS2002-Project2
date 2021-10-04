@@ -47,6 +47,9 @@ int             ubytes;  // ubytes calculated in duplicates.c
 // DEFINED in duplicates.c
 bool           ignore_mode;
 bool           quiet_mode;
+bool           list_dupes;
+LIST           **dupes;
+int            dupe_count;
 
 // -----------------------------------------------------------------------------------------------
 //  THESE FUNCTIONS ARE DECLARED HERE, AND DEFINED IN strSHA2.c :
@@ -116,3 +119,6 @@ extern    void      list_all_files(void);
 //  THESE FUNCTIONS ARE DECLARED HERE, AND DEFINED IN duplicates.c :
 
 extern    void      quiet_mode_summary(void);
+
+//  PRINT EACH DUPE (THE RELATIVE PATHNAME) IN A GIVEN LIST TO stdout
+extern    void      print_dupes(LIST *);
