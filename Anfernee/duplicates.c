@@ -1,9 +1,14 @@
+// NAMES: Anfernee Pontilan Alviar
+// STUDENT NUMBERS: 22886082 
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
 #include <stdbool.h>
 
 #include "duplicates.h"
+
 
 // GLOBALs
 bool ignore_mode = true;
@@ -104,8 +109,9 @@ int main(int argc, char *argv[])
     //scan_directory(".");
     //scan_dir_recur("/mnt/d/Github/CITS2002-Project2/tests");
     //scan_dir_recur("/mnt/d/Github/CITS2002-Project2/Tom");
-    scan_dir_recur("/mnt/d/University Documents/UWA/2021/Semester 2/CITS2002/Project-2/CITS2002-Project2/Anfernee");
-//  ADD ALL FILES TO hash_table TO CHECK FOR DUPLICATES
+    //scan_dir_recur("/mnt/d/University Documents/UWA/2021/Semester 2/CITS2002/Project-2/CITS2002-Project2/Anfernee");
+    scan_dir_recur("/mnt/e/UWA/2021/Semester Two/CITS2002/CITS2002-Project2/Anfernee");
+    //  ADD ALL FILES TO hash_table TO CHECK FOR DUPLICATES
     for(int i = 0; i < nfiles; ++i){
         hashtable_add(hash_table, files);
         ++files;
@@ -117,7 +123,7 @@ int main(int argc, char *argv[])
     
     //ufiles = nfiles - ufiles;
    
-    hashtable_count_dupes(hash_table);
+    //hashtable_count_dupes(hash_table);
 // MORE COMMENTS TO COME
 //  PRINT SUMMARY IFF quiet_mode = false
     if( quiet_mode ){

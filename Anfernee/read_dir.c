@@ -141,9 +141,7 @@ void scan_dir_recur(char *dirname)
             files[nfiles].mtime     = stat_info.st_mtime;     // TODO maybe wont need this
             files[nfiles].bytesize  = stat_info.st_size;      // its byte size
             nbytes                 += stat_info.st_size;      // add to total bytes so far
-            ubytes                 += stat_info.st_size;
             ++nfiles;
-            ++ufiles;
         }
     }
     

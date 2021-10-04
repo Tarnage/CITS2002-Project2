@@ -40,7 +40,7 @@ int list_count_dupe(LIST *list)
         list = list->next;
         if( list_is_dupe(list, pList) ){
             bytes = list->file_stats->bytesize;
-            --ufiles;
+            //--ufiles;
             //printf("BYTES: %i\n", bytes);
         }
 	    list	= list->next;
@@ -52,10 +52,10 @@ int list_count_dupe(LIST *list)
 
 
 //  DETERMINE IF A REQUIRED ITEM (A FILE) IS STORED IN A GIVEN LIST
-bool list_find(LIST *list, char *incoming_pathname)
+bool list_find(LIST *list, char *incoming_hash)
 {   
     while(list != NULL) {
-        if( (strcmp(list->file_stats->pathname, incoming_pathname) == 0) ){
+        if( (strcmp(list->file_stats->hash, incoming_hash) == 0) ){
             return true;
         }
 	    list	= list->next;
