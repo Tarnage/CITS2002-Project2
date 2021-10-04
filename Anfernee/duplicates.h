@@ -85,7 +85,7 @@ extern	void		 hashtable_add( HASHTABLE *, FILES *);
 extern	bool		 hashtable_find(HASHTABLE *, char *);
 
 // DETERMINE IF FILE IS A DUPLICATE
-extern    int        hashtable_count_dupes(HASHTABLE *);
+extern    void        hashtable_count_dupes(HASHTABLE *);
 
 //  PRINTS HASHTABLE CONTENTS
 extern    void       hashtable_print(HASHTABLE *);

@@ -5,7 +5,7 @@
 
 #include "duplicates.h"
 
-// GLOBALS
+// GLOBALs
 bool ignore_mode = true;
 bool quiet_mode  = false;
 
@@ -103,8 +103,8 @@ int main(int argc, char *argv[])
 
     //scan_directory(".");
     //scan_dir_recur("/mnt/d/Github/CITS2002-Project2/tests");
-    scan_dir_recur("/mnt/d/Github/CITS2002-Project2/Tom");
-
+    //scan_dir_recur("/mnt/d/Github/CITS2002-Project2/Tom");
+    scan_dir_recur("/mnt/d/University Documents/UWA/2021/Semester 2/CITS2002/Project-2/CITS2002-Project2/Anfernee");
 //  ADD ALL FILES TO hash_table TO CHECK FOR DUPLICATES
     for(int i = 0; i < nfiles; ++i){
         hashtable_add(hash_table, files);
@@ -113,10 +113,11 @@ int main(int argc, char *argv[])
 
     //hashtable_print(hash_table);
 
-    ubytes = nbytes - hashtable_count_dupes(hash_table);
+    //ubytes = nbytes - hashtable_count_dupes(hash_table);
     
-    ufiles = nfiles - ufiles;
-    
+    //ufiles = nfiles - ufiles;
+   
+    hashtable_count_dupes(hash_table);
 // MORE COMMENTS TO COME
 //  PRINT SUMMARY IFF quiet_mode = false
     if( quiet_mode ){

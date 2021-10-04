@@ -19,18 +19,6 @@ extern         char *strdup(const char *s);
 // 4 Represents a folder 
 #define DT_DIR 4
 
-/*
-FILES           *files  = NULL;
-// COUNT TOTAL NUMBER OF FILES FOUND
-int             nfiles  = 0;
-// TOTAL BYTES OF ALL FILES FOUND
-int             nbytes  = 0;
-// TOTAL NUMBER OF UNIQUE FILES
-int             ufiles  = 0;
-// TOTAL BYTES OF UNIQUE FILES
-int             ubytes  = 0;
-*/
-
 //  FILE IS IGNORED IF TRUE AND FILE (.) MEANING ITS A HIDDEN FILE
 //  TODO do we ignore dot(.) and dot-dot(..)
 bool file_ignored(const char *name)
@@ -153,7 +141,9 @@ void scan_dir_recur(char *dirname)
             files[nfiles].mtime     = stat_info.st_mtime;     // TODO maybe wont need this
             files[nfiles].bytesize  = stat_info.st_size;      // its byte size
             nbytes                 += stat_info.st_size;      // add to total bytes so far
+            ubytes                 += stat_info.st_size;
             ++nfiles;
+            ++ufiles;
         }
     }
     

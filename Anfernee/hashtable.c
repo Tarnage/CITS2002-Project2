@@ -72,13 +72,13 @@ bool hashtable_find(HASHTABLE *hashtable, char *pathname)
 // - do we want to loop through the whole hashtable after we read in the files or during?
 // - (CHILLI) how do we link() and unlink() a duplicate file?
 // - . and .. have the same hash values. are they considered duplicate? and do we count them as files, do we count their byte sizes
-int hashtable_count_dupes(HASHTABLE *hashtable)
+void hashtable_count_dupes(HASHTABLE *hashtable)
 {   
     int byte_count = 0;
     for(int i = 0; i < HASHTABLE_SIZE; ++i){
-        byte_count += list_count_dupe(hashtable[i]);
+        byte_count = list_count_dupe(hashtable[i]);
+        ubytes -= byte_count;
     }
-    return byte_count;
 }
 
 

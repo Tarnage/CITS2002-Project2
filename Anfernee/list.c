@@ -39,13 +39,14 @@ int list_count_dupe(LIST *list)
         LIST *pList = list;
         list = list->next;
         if( list_is_dupe(list, pList) ){
-            bytes += list->file_stats->bytesize;
-            ++ufiles;
+            bytes = list->file_stats->bytesize;
+            --ufiles;
             //printf("BYTES: %i\n", bytes);
         }
 	    list	= list->next;
         pList   = pList->next;
     }
+
     return bytes;
 }
 
