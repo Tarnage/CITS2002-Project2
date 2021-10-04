@@ -30,6 +30,8 @@ typedef struct _list {
      struct _list   *next;
 } LIST;
 
+//  WE DEFINE A HASHTABLE AS A (WILL BE, DYNAMICALLY ALLOCATED) ARRAY OF LISTs
+typedef	LIST * HASHTABLE;
 
 // -----------------------------------------------------------------------------------------------
 // DECLARE GLOBAL VARIABLES
@@ -45,11 +47,6 @@ int             ubytes;  // ubytes calculated in duplicates.c
 // DEFINED in duplicates.c
 bool           ignore_mode;
 bool           quiet_mode;
-
-// -----------------------------------------------------------------------------------------------
-
-//  WE DEFINE A HASHTABLE AS A (WILL BE, DYNAMICALLY ALLOCATED) ARRAY OF LISTs
-typedef	LIST * HASHTABLE;
 
 // -----------------------------------------------------------------------------------------------
 //  THESE FUNCTIONS ARE DECLARED HERE, AND DEFINED IN strSHA2.c :
