@@ -44,6 +44,7 @@ int             ubytes;  // ubytes calculated in duplicates.c
 
 // DEFINED in duplicates.c
 bool           ignore_mode;
+bool           quiet_mode;
 
 // -----------------------------------------------------------------------------------------------
 
@@ -112,3 +113,9 @@ extern    void      print_dir_summary(void);
 
 // PRINTS ALL FILES FOUND
 extern    void      list_all_files(void);
+
+
+// -----------------------------------------------------------------------------------------------
+//  THESE FUNCTIONS ARE DECLARED HERE, AND DEFINED IN duplicates.c :
+
+extern    void      quiet_mode_summary(void);

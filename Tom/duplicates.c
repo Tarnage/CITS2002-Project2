@@ -7,7 +7,7 @@
 
 // GLOBALs
 bool ignore_mode = true;
-
+bool quiet_mode  = false;
 
 
 
@@ -47,6 +47,18 @@ Locate and report duplicate files in, and below, a named directory.\n\
 }
 
 
+void quiet_mode_summary()
+{   
+    // IF nbytes DOES NOT EQUAL ubytes WE HAVE DUPLICATES
+    if(nbytes != ubytes){
+        printf("DUPLICATES FILES FOUND\n");
+        exit(EXIT_FAILURE);
+    }
+    printf("SUCCESS\n");
+    exit(EXIT_SUCCESS);
+}
+
+
 int main(int argc, char *argv[])
 {
 //  ENSURE THAT PROGRAM HAS CORRECT NUMBER OF ARGUMENTS
@@ -79,6 +91,7 @@ int main(int argc, char *argv[])
                 break;
             case 'q':
                 printf("Option [-q] was selected\n");
+                quiet_mode = true;
                 break;
             default: /* '?' */
                 usage(argv[0]);
@@ -89,8 +102,8 @@ int main(int argc, char *argv[])
     HASHTABLE   *hash_table = hashtable_new();
 
     //scan_directory(".");
-    scan_dir_recur("/mnt/d/Github/CITS2002-Project2/tests");
-    //scan_directory("/mnt/d/Github/CITS2002-Project2/Tom");
+    //scan_dir_recur("/mnt/d/Github/CITS2002-Project2/tests");
+    scan_dir_recur("/mnt/d/Github/CITS2002-Project2/Tom");
 
 //  ADD ALL FILES TO hash_table TO CHECK FOR DUPLICATES
     for(int i = 0; i < nfiles; ++i){
@@ -98,14 +111,20 @@ int main(int argc, char *argv[])
         ++files;
     }
 
-    hashtable_print(hash_table);
+    //hashtable_print(hash_table);
 
     ubytes = nbytes - hashtable_count_dupes(hash_table);
     
     ufiles = nfiles - ufiles;
     
-    print_dir_summary();
-
+// MORE COMMENTS TO COME
+//  PRINT SUMMARY IFF quiet_mode = false
+    if( quiet_mode ){
+        quiet_mode_summary();
+    }
+    else{
+        print_dir_summary();
+    }
 //  TERMINATE PROGRAM, INDICATING SUCCESS
         exit(EXIT_SUCCESS);
     }
