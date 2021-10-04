@@ -105,6 +105,7 @@ void scan_dir_recur(char *dirname)
     }
 
 // STORE CURRENT WORKING PATH
+// NEEDED TO CORRECTLY IDENITFY SUB-DIRECTORIES
     if((getcwd(current_path, MAXPATHLEN)) == NULL)
         exit(EXIT_FAILURE);
 
@@ -136,8 +137,9 @@ void scan_dir_recur(char *dirname)
         // TODO do we always ignore dot(.) and dot-dot(..)?
         else if ( !file_ignored(dp->d_name) &&
                     (strcmp(dp->d_name, ".") != 0 && strcmp(dp->d_name, "..") != 0) ){
-
-            printf("d_type: %i\tis_reg: %i\t%s\n", S_ISDIR(stat_info.st_mode), S_ISREG(stat_info.st_mode), dp->d_name);
+            
+            // FOR TESTING
+            //printf("d_type: %i\tis_reg: %i\t%s\n", S_ISDIR(stat_info.st_mode), S_ISREG(stat_info.st_mode), dp->d_name);
 
 //  EXTEND OUR ARRAY OF STRUCTURES BY ONE ELEMENT
             files                   = realloc(files, (nfiles+1)*sizeof(files[0]));
