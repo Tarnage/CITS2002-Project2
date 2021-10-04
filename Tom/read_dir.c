@@ -29,12 +29,16 @@ int             ufiles  = 0;
 // TOTAL BYTES OF UNIQUE FILES
 int             ubytes  = 0;
 
+//  FILE IS IGNORED IF TRUE AND FILE (.) MEANING ITS A HIDDEN FILE
+//  TODO do we ignore dot(.) and dot-dot(..)
 bool file_ignored(const char *name)
 {   
-    return ignore_mode && ((strcmp(name, ".") == 0) || (strcmp(name, "..") == 0) || (name[0] == '.'));
+    return (ignore_mode && (name[0] == '.'));
 }
 
 
+/* I DONT THINK WE NEED THIS CODE BLOCK
+IF WE ONLY WANT TO LOOK IN ONE DIRECTORY AND NOT RECURSIVELY USE THIS BLOCK
 void scan_directory(char *dirname)
 {
     DIR             *dirp;
@@ -57,7 +61,7 @@ void scan_directory(char *dirname)
     //  SENDS FORMATTED STRING TO STRING POINTER POINTED BY pathname
             sprintf(pathname, "%s/%s", dirname, dp->d_name);
             // FOR TESTING
-            printf("%s/%s\n", dirname, dp->d_name);
+            //printf("%s/%s\n", dirname, dp->d_name);
 
     //  DETERMINE ATTRIBUTES OF THIS DIRECTORY ENTRY
             if(stat(pathname, &stat_info) != 0) {
@@ -83,6 +87,7 @@ void scan_directory(char *dirname)
 //  CLOSE THE DIRECTORY
     closedir(dirp);
 }
+*/
 
 //  SCANS DIRECTORY RECURSIVELY 
 void scan_dir_recur(char *dirname)
@@ -128,8 +133,12 @@ void scan_dir_recur(char *dirname)
                 (strcmp(dp->d_name, "..") != 0)){
             scan_dir_recur(pathname);
         }
-        else if ( !file_ignored(dp->d_name) ){
+        // TODO do we always ignore dot(.) and dot-dot(..)?
+        else if ( !file_ignored(dp->d_name) &&
+                    (strcmp(dp->d_name, ".") != 0 && strcmp(dp->d_name, "..") != 0) ){
+
             printf("d_type: %i\tis_reg: %i\t%s\n", S_ISDIR(stat_info.st_mode), S_ISREG(stat_info.st_mode), dp->d_name);
+
 //  EXTEND OUR ARRAY OF STRUCTURES BY ONE ELEMENT
             files                   = realloc(files, (nfiles+1)*sizeof(files[0]));
             CHECK_ALLOC(files);			// ensure allocation was OK
