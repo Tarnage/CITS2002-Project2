@@ -58,34 +58,34 @@ extern    char      *strSHA2(char *);
 //  THESE FUNCTIONS ARE DECLARED HERE, AND DEFINED IN list.c :
 
 //  'CREATE' A NEW, EMPTY LIST
-extern	LIST	     *list_new(void);
+extern	  LIST	     *list_new(void);
 
 //  ADD A NEW (STRING) ITEM TO AN EXISTING LIST
-extern	LIST	     *list_add(LIST *, FILES *);
+extern	  LIST	     *list_add(LIST *, FILES *);
 
 //  RETURN BYTE COUNT OF DUPES
-extern	int 	     list_count_dupe(LIST *);
+extern	  void 	     list_count_dupe(LIST *);
 
 //  DETERMINE IF A REQUIRED ITEM (A FILE) IS STORED IN A GIVEN LIST
-extern    bool      list_find(LIST *list, char *);
+extern    bool       list_find(LIST *list, char *);
 
 //  PRINT EACH ITEM (A STRING) IN A GIVEN LIST TO stdout
-extern	void	     list_print(LIST *);
+extern	  void	     list_print(LIST *);
 
 // -----------------------------------------------------------------------------------------------
 //  THESE FUNCTIONS ARE DECLARED HERE, AND DEFINED IN hashtable.c :
 
 //  ALLOCATE SPACE FOR A NEW HASHTABLE (AND ARRAY OF LISTS)
-extern	HASHTABLE	*hashtable_new(void);
+extern	  HASHTABLE	*hashtable_new(void);
 
 //  ADD A NEW STRING TO A GIVEN HASHTABLE
-extern	void		 hashtable_add( HASHTABLE *, FILES *);
+extern	  void		 hashtable_add( HASHTABLE *, FILES *);
 
 //  DETERMINE IF A REQUIRED STRING ALREADY EXISTS IN A GIVEN HASHTABLE
-extern	bool		 hashtable_find(HASHTABLE *, char *);
+extern	  bool		 hashtable_find(HASHTABLE *, char *);
 
 // DETERMINE IF FILE IS A DUPLICATE
-extern    int        hashtable_count_dupes(HASHTABLE *);
+extern    void       hashtable_count_dupes(HASHTABLE *);
 
 //  PRINTS HASHTABLE CONTENTS
 extern    void       hashtable_print(HASHTABLE *);

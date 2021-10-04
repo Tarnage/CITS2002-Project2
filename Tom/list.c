@@ -22,31 +22,30 @@ LIST *list_new(void)
 bool list_is_dupe(LIST *list, LIST *incoming_list)
 {
     while(list != NULL) {
-    if( (strcmp(list->file_stats->hash, incoming_list->file_stats->hash) == 0) ){
-        return true;
-    }
-    list	= list->next;
+        if( (strcmp(list->file_stats->hash, incoming_list->file_stats->hash) == 0) ) {
+            return true;
+        }
+        list	= list->next;
     }
     return false;
 }
 
 
 //  RETURN BYTE COUNT OF DUPES
-int list_count_dupe(LIST *list)
+void list_count_dupe(LIST *list)
 {   
-    int bytes = 0;
     while(list != NULL && list->next != NULL) {
         LIST *pList = list;
         list = list->next;
         if( list_is_dupe(list, pList) ){
-            bytes += list->file_stats->bytesize;
-            ++ufiles;
+            // increment ubytes and u files
+            ubytes += list->file_stats->bytesize;
+            ++ufiles; 
             //printf("BYTES: %i\n", bytes);
         }
 	    list	= list->next;
         pList   = pList->next;
     }
-    return bytes;
 }
 
 
