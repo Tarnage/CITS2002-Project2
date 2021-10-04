@@ -18,40 +18,70 @@ LIST *list_new(void)
     return NULL;
 }
 
-//  DETERMINE IF A REQUIRED ITEM (A STRING) IS STORED IN A GIVEN LIST
-bool list_find(LIST *list, char *name, char*hash)
+//  DETERMINE IF A REQUIRED ITEM (A FILE) IS A DUPELICATE
+bool list_is_dupe(LIST *list, LIST *incoming_list)
 {
     while(list != NULL) {
-	if( (strcmp(list->fname, name) == 0) && (strcmp(list->fhash, hash) == 0) ) {
-	    return true;
-	}
-	list	= list->next;
+    if( (strcmp(list->file_stats->hash, incoming_list->file_stats->hash) == 0) ){
+        return true;
+    }
+    list	= list->next;
     }
     return false;
 }
 
+
+//  RETURN BYTE COUNT OF DUPES
+int list_count_dupe(LIST *list)
+{   
+    int bytes = 0;
+    while(list != NULL && list->next != NULL) {
+        LIST *pList = list;
+        list = list->next;
+        if( list_is_dupe(list, pList) ){
+            bytes += list->file_stats->bytesize;
+            ++ufiles;
+            //printf("BYTES: %i\n", bytes);
+        }
+	    list	= list->next;
+        pList   = pList->next;
+    }
+    return bytes;
+}
+
+
+//  DETERMINE IF A REQUIRED ITEM (A FILE) IS STORED IN A GIVEN LIST
+bool list_find(LIST *list, char *incoming_pathname)
+{   
+    while(list != NULL) {
+        if( (strcmp(list->file_stats->pathname, incoming_pathname) == 0) ){
+            return true;
+        }
+	    list	= list->next;
+    }
+    return false;
+}
+
+
 //  ALLOCATE SPACE FOR A NEW LIST ITEM, TESTING THAT ALLOCATION SUCCEEDS
-// TODO add size
-LIST *list_new_item(char *newfname, char *newfhash)
+LIST *list_new_item(FILES *new_file)
 {
     LIST *new       = malloc( sizeof(LIST) );
     CHECK_ALLOC(new);
-    new->fname     =  strdup(newfname);
-    new->fhash     =  strdup(newfhash);
-    CHECK_ALLOC(new->fname);
-    CHECK_ALLOC(new->fhash);
+    new->file_stats = new_file;
+    CHECK_ALLOC(new->file_stats);
     new->next       =  NULL;
     return new;
 }
 
 //  ADD A NEW (STRING) ITEM TO AN EXISTING LIST
-LIST *list_add(LIST *list, char *newfname, char *newfhash)
-{
-    if(list_find(list, newfname, newfhash)) {            // only add each item once
+LIST *list_add(LIST *list, FILES *new_file)
+{    
+    if(list_find(list, new_file->pathname)) {            // only add each item once
         return list;
     }
     else {                                      // add new item to head of list
-        LIST *new   = list_new_item(newfname, newfhash);
+        LIST *new   = list_new_item(new_file);
         new->next   = list;
         return new;
     }
@@ -62,7 +92,7 @@ void list_print(LIST *list)
 {
     if(list != NULL) {
         while(list != NULL) {
-	    printf("%s\t%i", list->fname, list->size);
+	    printf("(%s-%i-%s)", list->file_stats->pathname, list->file_stats->bytesize, list->file_stats->hash);
 	    if(list->next != NULL) {
 	        printf(" -> ");
             }
