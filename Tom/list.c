@@ -35,8 +35,9 @@ void list_find_dupe(LIST *list)
             new_dupes = list_add(new_dupes, pCurrent->file_stats);
             ubytes += pCurrent->file_stats->bytesize;
             ++ufiles;
-            pCurrent = pCurrent->next;
         }
+        // WE CAN INCREMENT pCurrent HERE
+        pCurrent = pCurrent->next;
 
         //  IFF THERE ARE MORE THAN 2 ITEMS ITERTATES THROUGH LIST TO FIND DUPES
         while(pCurrent != NULL){
@@ -66,10 +67,6 @@ void list_find_dupe(LIST *list)
     }
         
 }
-
-
-
-
 
 
 //  RETURN BYTE COUNT OF DUPES
