@@ -22,39 +22,35 @@ LIST *list_new(void)
 void list_find_dupe(LIST *list)
 {   
     LIST *new_dupes = list_new();
-    LIST *pStart = list_new();
     LIST *pCurrent = list_new();
 
 //  ADD THE FIRST ITEM IF ITS A DUPE
-    if( list != NULL && list->next != NULL){
+    while( list != NULL && list->next != NULL){
         
-        pStart = list;
-        pCurrent = pStart->next;
+        pCurrent = list->next;
+
+        if( (strcmp(list->file_stats->hash, pCurrent->file_stats->hash) == 0) ){
+            new_dupes = list_add(new_dupes, list->file_stats);
+        }
         
-        if( pCurrent != NULL) {
-            if((strcmp(pStart->file_stats->hash, pCurrent->file_stats->hash) == 0) ){
-                new_dupes = list_add(new_dupes, pStart->file_stats);
+        while(pCurrent != NULL){
+
+        //  ITERTATE THROUGH LIST TO FIND DUPES
+
+            if( (strcmp(list->file_stats->hash, pCurrent->file_stats->hash) == 0) ) {
+
+            new_dupes = list_add(new_dupes, pCurrent->file_stats);
+            ubytes += pCurrent->file_stats->bytesize;
+            ++ufiles;
             }
+            pCurrent	= pCurrent->next;
         }
-    //  ITERTATE THROUGH LIST TO FIND DUPES
-        while(pStart != NULL ){
-
-            while(pCurrent != NULL && pCurrent->next != NULL){
-
-                if( (strcmp(pStart->file_stats->hash, pCurrent->file_stats->hash) == 0) ) {
-
-                new_dupes = list_add(new_dupes, pCurrent->file_stats);
-                ubytes += pCurrent->file_stats->bytesize;
-                ++ufiles;
-                }
-                pCurrent	= pCurrent->next;
-            }
-            pStart = pStart->next;
-            pCurrent = pStart->next;
-        }
+        
+        list = list->next;
+        pCurrent = list->next;
             
     }
-    
+
     if( new_dupes != NULL ){
     // realloc dupes array
     dupes = realloc(dupes, (dupe_count + 1)*sizeof(FILES));
