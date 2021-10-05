@@ -11,6 +11,8 @@
 #include  <unistd.h>
 
 #include "duplicates.h"
+#include "list.h"
+#include "globals.h"
 
 #if     defined(__linux__)
 extern         char *strdup(const char *s);
@@ -18,6 +20,16 @@ extern         char *strdup(const char *s);
 
 // 4 Represents a folder 
 #define DT_DIR 4
+
+FILES           *files  = NULL;
+// COUNT TOTAL NUMBER OF FILES FOUND
+int             nfiles  = 0;
+// TOTAL BYTES OF ALL FILES FOUND
+int             nbytes  = 0;
+// TOTAL NUMBER OF UNIQUE FILES
+int             ufiles  = 0;
+// TOTAL BYTES OF UNIQUE FILES
+int             ubytes  = 0;
 
 //  FILE IS IGNORED IF TRUE AND FILE (.) MEANING ITS A HIDDEN FILE
 //  TODO do we ignore dot(.) and dot-dot(..)
@@ -95,6 +107,7 @@ void scan_dir_recur(char *dirname)
     }
 
 // STORE CURRENT WORKING PATH
+// NEEDED TO CORRECTLY IDENITFY SUB-DIRECTORIES
     if((getcwd(current_path, MAXPATHLEN)) == NULL)
         exit(EXIT_FAILURE);
 
@@ -126,8 +139,9 @@ void scan_dir_recur(char *dirname)
         // TODO do we always ignore dot(.) and dot-dot(..)?
         else if ( !file_ignored(dp->d_name) &&
                     (strcmp(dp->d_name, ".") != 0 && strcmp(dp->d_name, "..") != 0) ){
-
-            printf("d_type: %i\tis_reg: %i\t%s\n", S_ISDIR(stat_info.st_mode), S_ISREG(stat_info.st_mode), dp->d_name);
+            
+            // FOR TESTING
+            //printf("d_type: %i\tis_reg: %i\t%s\n", S_ISDIR(stat_info.st_mode), S_ISREG(stat_info.st_mode), dp->d_name);
 
 //  EXTEND OUR ARRAY OF STRUCTURES BY ONE ELEMENT
             files                   = realloc(files, (nfiles+1)*sizeof(files[0]));
@@ -136,6 +150,8 @@ void scan_dir_recur(char *dirname)
 //  REMEMBER (COPY) THIS ELEMENT'S RELATIVE PATHNAME
             files[nfiles].pathname  = strdup(pathname);
             CHECK_ALLOC(files[nfiles].pathname);	// ensure allocation was OK
+            files[nfiles].filename  = strdup(dp->d_name);
+            CHECK_ALLOC(files[nfiles].filename);
 
 //  REMEMBER THIS ELEMENT'S MODIFICATION TIME
             files[nfiles].mtime     = stat_info.st_mtime;     // TODO maybe wont need this

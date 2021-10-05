@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "duplicates.h"
+#include "globals.h"
+#include "list.h"
 
 //  ON LINUX WE NEED TO PROTOTYPE THE (NON-STANDARD) strdup() FUNCTION 
 //  WHY?  https://stackoverflow.com/questions/32944390/what-is-the-rationale-for-not-including-strdup-in-the-c-standard
@@ -19,43 +20,99 @@ LIST *list_new(void)
 }
 
 //  DETERMINE IF A REQUIRED ITEM (A FILE) IS A DUPELICATE
-bool list_is_dupe(LIST *list, LIST *incoming_list)
-{
-    while(list != NULL) {
-    if( (strcmp(list->file_stats->hash, incoming_list->file_stats->hash) == 0) ){
-        return true;
+void list_find_dupe(LIST *list)
+{   
+    LIST *new_dupes = list_new();
+    LIST *pCurrent = list_new();
+
+//  ONLY ITERATE IF WE HAVE >= 2 ITEMS IN THE LIST
+    while( list != NULL && list->next != NULL){
+        
+        pCurrent = list->next;
+
+        // CHECKS FIRST TWO AND ADDS THEM TO LIST IFF THEY ARE DUPES
+        if( (strcmp(list->file_stats->hash, pCurrent->file_stats->hash) == 0) ){
+            new_dupes = list_add(new_dupes, list->file_stats);
+            new_dupes = list_add(new_dupes, pCurrent->file_stats);
+            ubytes += pCurrent->file_stats->bytesize;
+            ++ufiles;
+        }
+        // WE CAN INCREMENT pCurrent HERE
+        pCurrent = pCurrent->next;
+
+        //  IFF THERE ARE MORE THAN 2 ITEMS ITERTATES THROUGH LIST TO FIND DUPES
+        while(pCurrent != NULL){
+
+            if( (strcmp(list->file_stats->hash, pCurrent->file_stats->hash) == 0) ) {
+
+                new_dupes = list_add(new_dupes, pCurrent->file_stats);
+                ubytes += pCurrent->file_stats->bytesize;
+                ++ufiles;
+            }
+            pCurrent	= pCurrent->next;
+        }
+        
+        list = list->next;
+        pCurrent = list->next;
+            
     }
-    list	= list->next;
+
+    if( new_dupes != NULL ){
+    // realloc dupes array
+    dupes = realloc(dupes, (dupe_count + 1)*sizeof(FILES));
+    CHECK_ALLOC(dupes);
+    // list to dupes
+    dupes[dupe_count] = new_dupes;
+    //increment dupe count
+    ++dupe_count;
     }
-    return false;
+        
 }
 
 
 //  RETURN BYTE COUNT OF DUPES
-int list_count_dupe(LIST *list)
-{   
-    int bytes = 0;
-    while(list != NULL && list->next != NULL) {
-        LIST *pList = list;
-        list = list->next;
-        if( list_is_dupe(list, pList) ){
-            bytes = list->file_stats->bytesize;
-            //--ufiles;
-            //printf("BYTES: %i\n", bytes);
-        }
-	    list	= list->next;
-        pList   = pList->next;
-    }
+// void list_count_dupe(LIST *list)
+// {   
+//     bool added_dupe = false;
+//     LIST *new_dupes = list_new();
 
-    return bytes;
-}
+//     while(list != NULL && list->next != NULL) {
+        
+//         LIST *pList = list;
+//         list = list->next;
+
+//         if( list_is_dupe(list, pList) ){
+//             // TODO MAKE IT MORE EFFICIENT, CURRENT TRYS TO ADD file_stats THAT HAVE ALREADY BEEN CHECKED AND ADDED
+//             // BUT IT WORKS!! ie. if plist = 1, list = 2, adds both to newDupes and then if plist = 2 and list = 3 trys to add 2 again.
+//             new_dupes = list_add(new_dupes, list->file_stats);
+//             new_dupes = list_add(new_dupes, pList->file_stats);
+
+//             added_dupe = true;
+//             // increment ubytes and u files
+//             ubytes += list->file_stats->bytesize;
+//             ++ufiles;
+//         }
+// 	    list	= list->next;
+//         pList   = pList->next;
+//     }
+
+//     if( added_dupe ){
+//         // realloc dupes array
+//         dupes = realloc(dupes, (dupe_count + 1)*sizeof(FILES));
+//         CHECK_ALLOC(dupes);
+//         // list to dupes
+//         dupes[dupe_count] = new_dupes;
+//         //increment dupe count
+//         ++dupe_count;
+//     }
+// }
 
 
 //  DETERMINE IF A REQUIRED ITEM (A FILE) IS STORED IN A GIVEN LIST
-bool list_find(LIST *list, char *incoming_hash)
+bool list_find(LIST *list, char *incoming_pathname)
 {   
     while(list != NULL) {
-        if( (strcmp(list->file_stats->hash, incoming_hash) == 0) ){
+        if( (strcmp(list->file_stats->pathname, incoming_pathname) == 0) ){
             return true;
         }
 	    list	= list->next;
