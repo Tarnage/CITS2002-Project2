@@ -24,7 +24,7 @@ void list_find_dupe(LIST *list)
     LIST *new_dupes = list_new();
     LIST *pCurrent = list_new();
 
-//  ADD THE FIRST ITEM IF ITS A DUPE
+//  ONLY ITERATE IF WE HAVE >= 2 ITEMS IN THE LIST
     while( list != NULL && list->next != NULL){
         
         pCurrent = list->next;
