@@ -19,54 +19,95 @@ LIST *list_new(void)
 }
 
 //  DETERMINE IF A REQUIRED ITEM (A FILE) IS A DUPELICATE
-bool list_is_dupe(LIST *list, LIST *incoming_list)
-{
-    while(list != NULL) {
-        if( (strcmp(list->file_stats->hash, incoming_list->file_stats->hash) == 0) ) {
-            return true;
+void list_find_dupe(LIST *list)
+{   
+    LIST *new_dupes = list_new();
+    LIST *pStart = list_new();
+    LIST *pCurrent = list_new();
+
+//  ADD THE FIRST ITEM IF ITS A DUPE
+    if( list != NULL && list->next != NULL){
+        
+        pStart = list;
+        pCurrent = pStart->next;
+        
+        if( pCurrent != NULL) {
+            if((strcmp(pStart->file_stats->hash, pCurrent->file_stats->hash) == 0) ){
+                new_dupes = list_add(new_dupes, pStart->file_stats);
+            }
         }
-        list	= list->next;
+    //  ITERTATE THROUGH LIST TO FIND DUPES
+        while(pStart != NULL ){
+
+            while(pCurrent != NULL && pCurrent->next != NULL){
+
+                if( (strcmp(pStart->file_stats->hash, pCurrent->file_stats->hash) == 0) ) {
+
+                new_dupes = list_add(new_dupes, pCurrent->file_stats);
+                ubytes += pCurrent->file_stats->bytesize;
+                ++ufiles;
+                }
+                pCurrent	= pCurrent->next;
+            }
+            pStart = pStart->next;
+            pCurrent = pStart->next;
+        }
+            
     }
-    return false;
+    
+    if( new_dupes != NULL ){
+    // realloc dupes array
+    dupes = realloc(dupes, (dupe_count + 1)*sizeof(FILES));
+    CHECK_ALLOC(dupes);
+    // list to dupes
+    dupes[dupe_count] = new_dupes;
+    //increment dupe count
+    ++dupe_count;
+    }
+        
 }
+
+
+
+
 
 
 //  RETURN BYTE COUNT OF DUPES
-void list_count_dupe(LIST *list)
-{   
-    bool added_dupe = false;
-    LIST *new_dupes = list_new();
+// void list_count_dupe(LIST *list)
+// {   
+//     bool added_dupe = false;
+//     LIST *new_dupes = list_new();
 
-    while(list != NULL && list->next != NULL) {
+//     while(list != NULL && list->next != NULL) {
         
-        LIST *pList = list;
-        list = list->next;
+//         LIST *pList = list;
+//         list = list->next;
 
-        if( list_is_dupe(list, pList) ){
-            // TODO MAKE IT MORE EFFICIENT, CURRENT TRYS TO ADD file_stats THAT HAVE ALREADY BEEN CHECKED AND ADDED
-            // BUT IT WORKS!! ie. if plist = 1, list = 2, adds both to newDupes and then if plist = 2 and list = 3 trys to add 2 again.
-            new_dupes = list_add(new_dupes, list->file_stats);
-            new_dupes = list_add(new_dupes, pList->file_stats);
+//         if( list_is_dupe(list, pList) ){
+//             // TODO MAKE IT MORE EFFICIENT, CURRENT TRYS TO ADD file_stats THAT HAVE ALREADY BEEN CHECKED AND ADDED
+//             // BUT IT WORKS!! ie. if plist = 1, list = 2, adds both to newDupes and then if plist = 2 and list = 3 trys to add 2 again.
+//             new_dupes = list_add(new_dupes, list->file_stats);
+//             new_dupes = list_add(new_dupes, pList->file_stats);
 
-            added_dupe = true;
-            // increment ubytes and u files
-            ubytes += list->file_stats->bytesize;
-            ++ufiles;
-        }
-	    list	= list->next;
-        pList   = pList->next;
-    }
+//             added_dupe = true;
+//             // increment ubytes and u files
+//             ubytes += list->file_stats->bytesize;
+//             ++ufiles;
+//         }
+// 	    list	= list->next;
+//         pList   = pList->next;
+//     }
 
-    if( added_dupe ){
-        // realloc dupes array
-        dupes = realloc(dupes, (dupe_count + 1)*sizeof(FILES));
-        CHECK_ALLOC(dupes);
-        // list to dupes
-        dupes[dupe_count] = new_dupes;
-        //increment dupe count
-        ++dupe_count;
-    }
-}
+//     if( added_dupe ){
+//         // realloc dupes array
+//         dupes = realloc(dupes, (dupe_count + 1)*sizeof(FILES));
+//         CHECK_ALLOC(dupes);
+//         // list to dupes
+//         dupes[dupe_count] = new_dupes;
+//         //increment dupe count
+//         ++dupe_count;
+//     }
+// }
 
 
 //  DETERMINE IF A REQUIRED ITEM (A FILE) IS STORED IN A GIVEN LIST

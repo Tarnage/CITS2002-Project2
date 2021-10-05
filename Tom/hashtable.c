@@ -75,7 +75,7 @@ bool hashtable_find(HASHTABLE *hashtable, char *pathname)
 void hashtable_count_dupes(HASHTABLE *hashtable)
 {   
     for(int i = 0; i < HASHTABLE_SIZE; ++i){
-        list_count_dupe(hashtable[i]);
+        list_find_dupe(hashtable[i]);
     }
 }
 

@@ -129,7 +129,6 @@ int main(int argc, char *argv[])
     files = ptemp;                      // return files back to start
 
     //hashtable_print(hash_table);
-
     hashtable_count_dupes(hash_table);
     
     ufiles = nfiles - ufiles;

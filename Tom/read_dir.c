@@ -148,6 +148,8 @@ void scan_dir_recur(char *dirname)
 //  REMEMBER (COPY) THIS ELEMENT'S RELATIVE PATHNAME
             files[nfiles].pathname  = strdup(pathname);
             CHECK_ALLOC(files[nfiles].pathname);	// ensure allocation was OK
+            files[nfiles].filename  = strdup(dp->d_name);
+            CHECK_ALLOC(files[nfiles].filename);
 
 //  REMEMBER THIS ELEMENT'S MODIFICATION TIME
             files[nfiles].mtime     = stat_info.st_mtime;     // TODO maybe wont need this

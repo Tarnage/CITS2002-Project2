@@ -18,6 +18,7 @@
 // DATA TYPE FOR READING IN FILES
 typedef struct _files{
     char           *pathname;
+    char           *filename;
     char           *hash;
     int             bytesize;
     time_t          mtime;
@@ -66,11 +67,11 @@ extern	  LIST	     *list_new(void);
 //  ADD A NEW (STRING) ITEM TO AN EXISTING LIST
 extern	  LIST	     *list_add(LIST *, FILES *);
 
-//  RETURN BYTE COUNT OF DUPES
-extern	  void 	     list_count_dupe(LIST *);
+//  APPENDS DUPLICATES TO LIST OF LISTS
+extern	  void 	     list_find_dupe(LIST *);
 
 //  DETERMINE IF A REQUIRED ITEM (A FILE) IS STORED IN A GIVEN LIST
-extern    bool       list_find(LIST *list, char *);
+extern    bool       list_find(LIST *, char *);
 
 //  PRINT EACH ITEM (A STRING) IN A GIVEN LIST TO stdout
 extern	  void	     list_print(LIST *);
