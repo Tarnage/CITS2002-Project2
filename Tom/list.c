@@ -32,10 +32,9 @@ void list_find_dupe(LIST *list)
         if( (strcmp(list->file_stats->hash, pCurrent->file_stats->hash) == 0) ){
             new_dupes = list_add(new_dupes, list->file_stats);
         }
-        
-        while(pCurrent != NULL){
 
         //  ITERTATE THROUGH LIST TO FIND DUPES
+        while(pCurrent != NULL){
 
             if( (strcmp(list->file_stats->hash, pCurrent->file_stats->hash) == 0) ) {
 
