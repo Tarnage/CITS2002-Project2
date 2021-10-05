@@ -29,18 +29,23 @@ void list_find_dupe(LIST *list)
         
         pCurrent = list->next;
 
+        // CHECKS FIRST TWO AND ADDS THEM TO LIST IFF THEY ARE DUPES
         if( (strcmp(list->file_stats->hash, pCurrent->file_stats->hash) == 0) ){
             new_dupes = list_add(new_dupes, list->file_stats);
+            new_dupes = list_add(new_dupes, pCurrent->file_stats);
+            ubytes += pCurrent->file_stats->bytesize;
+            ++ufiles;
+            pCurrent = pCurrent->next;
         }
 
-        //  ITERTATE THROUGH LIST TO FIND DUPES
+        //  IFF THERE ARE MORE THAN 2 ITEMS ITERTATES THROUGH LIST TO FIND DUPES
         while(pCurrent != NULL){
 
             if( (strcmp(list->file_stats->hash, pCurrent->file_stats->hash) == 0) ) {
 
-            new_dupes = list_add(new_dupes, pCurrent->file_stats);
-            ubytes += pCurrent->file_stats->bytesize;
-            ++ufiles;
+                new_dupes = list_add(new_dupes, pCurrent->file_stats);
+                ubytes += pCurrent->file_stats->bytesize;
+                ++ufiles;
             }
             pCurrent	= pCurrent->next;
         }
