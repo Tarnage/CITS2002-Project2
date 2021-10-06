@@ -4,7 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "duplicates.h"
+#include "hashtable.h"
+#include "list.h"
+#include "strSHA2.h"
 
 #if	defined(__linux__)
 extern	char	*strdup(char *string);
@@ -63,6 +65,14 @@ bool hashtable_find(HASHTABLE *hashtable, char *pathname)
     return list_find(hashtable[h], pathname);
 }
 
+//  DETERMINE IF A FILE STRUCT ALREADY EXISTS IN A GIVEN HASHTABLE
+bool hashtable_find_hash(HASHTABLE *hashtable, char *input_hash)
+{   
+    uint32_t h	= hash_string(input_hash) % HASHTABLE_SIZE;     // choose list
+    
+    return list_find_hash(hashtable[h], input_hash);
+}
+
 // DETERMINE IF FILE IS A DUPLICATE
 // TODO finish logic of finding a dupe
 // things to consider
@@ -80,8 +90,15 @@ void hashtable_count_dupes(HASHTABLE *hashtable)
 }
 
 
+//  PRINTS HASHTABLE CONTENTS WITH GIVEN SHA2
+void hashtable_print_hash(HASHTABLE *hashtable, char *input_hash)
+{
+    uint32_t h	= hash_string(input_hash) % HASHTABLE_SIZE;
+    list_print(hashtable[h]);
+}
+
 //  PRINTS HASHTABLE CONTENTS
-void hashtable_print(HASHTABLE *hashtable)
+void hashtable_print_all(HASHTABLE *hashtable)
 {
     for(int i = 0; i < HASHTABLE_SIZE; ++i){
         list_print(hashtable[i]);
