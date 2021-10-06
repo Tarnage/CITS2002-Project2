@@ -161,6 +161,7 @@ int main(int argc, char *argv[])
 //  INITIALIZE HASHTABLE FOR CHECKING DUPLICATES
     HASHTABLE   *hash_table = hashtable_new();
 
+    //scan_dir_recur("TEST_DOESNT_EXIST");
     scan_dir_recur("../tests");
     //scan_dir_recur("..");
     //scan_dir_recur("/mnt/d/Github/CITS2002-Project2/tests");
