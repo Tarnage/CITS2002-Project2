@@ -1,6 +1,6 @@
 # defining headers
 PROJECT = duplicates
-HEADERS = $(PROJECT).h
+HEADERS = list.h structures.h globals.h hashtable.h strSHA2.h duplicates.h
 OBJ 	= duplicates.o hashtable.o list.o strSHA2.o read_dir.o
 
 C11		= cc -std=c11
@@ -10,7 +10,6 @@ CFLAGS 	= -Wall -Werror -pedantic
 $(PROJECT) : $(OBJ)
 	$(C11) $(CFLAGS) -o $(PROJECT) $(OBJ)
 
-#% is a wildcard
 %.o : %.c $(HEADERS)
 	$(C11) $(CFLAGS) -c $<
 
