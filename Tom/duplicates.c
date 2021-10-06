@@ -103,7 +103,7 @@ void quiet_mode_summary()
     // IF nbytes DOES NOT EQUAL ubytes WE HAVE DUPLICATES
     // TODO COULD DO A "PROPER" CHECK FOR DUPES SINCE WE ALREADY COUNT DUPES
     if(nbytes != ubytes){
-        printf("DUPLICATES FILES FOUND\n");
+        printf("DUPLICATE FILES FOUND\n");
         exit(EXIT_FAILURE);
     }
     printf("SUCCESS\n");
