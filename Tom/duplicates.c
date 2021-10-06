@@ -4,12 +4,23 @@
 #include <stdbool.h>
 
 #include "duplicates.h"
+#include "list.h"
+#include "hashtable.h"
 
-// GLOBALs
-bool ignore_mode = true;
-bool quiet_mode  = false;
-bool list_dupes  = false;
-LIST **dupes     = NULL;
+
+
+// GLOBALS
+bool    ignore_mode         = true;
+bool    quiet_mode          = false;
+bool    list_dupes          = false;
+bool    list_hash           = false;
+bool    find_file_mode      = false;
+
+char    *hash;
+char    *find_me;
+char    *find_me_hash;
+LIST    **dupes             = NULL;
+LIST    *found_hash         = NULL;
 
 
 void usage(char *progname) {
@@ -61,9 +72,36 @@ void print_dupes(LIST *list)
 }
 
 
+void print_matching_files(HASHTABLE *incoming_table)
+{   
+    // IF nbytes DOES NOT EQUAL ubytes WE HAVE DUPLICATES
+    if( hashtable_find_hash(incoming_table, find_me_hash) ){
+        hashtable_print_hash(incoming_table, find_me_hash);
+        exit(EXIT_SUCCESS);
+    }
+    else{
+        exit(EXIT_FAILURE);
+    }
+
+}
+
+
+void print_matching_hash(HASHTABLE *incoming_table)
+{
+    if( hashtable_find_hash(incoming_table, hash) ) {
+        list_print(found_hash);
+        exit(EXIT_SUCCESS);
+    }
+    else{
+        exit(EXIT_FAILURE);
+    }
+}
+
+
 void quiet_mode_summary()
 {   
     // IF nbytes DOES NOT EQUAL ubytes WE HAVE DUPLICATES
+    // TODO COULD DO A "PROPER" CHECK FOR DUPES SINCE WE ALREADY COUNT DUPES
     if(nbytes != ubytes){
         printf("DUPLICATES FILES FOUND\n");
         exit(EXIT_FAILURE);
@@ -96,6 +134,13 @@ int main(int argc, char *argv[])
                 break;
             case 'f':
                 printf("Option [-f] was selected\n");
+                find_file_mode = true;
+                find_me = optarg;
+                break;
+            case 'h':
+                printf("Option [-h] was selected\n");
+                list_hash = true;
+                hash = optarg;
                 break;
             case 'l':
                 printf("Option [-l] was selected\n");
@@ -142,12 +187,22 @@ int main(int argc, char *argv[])
         }
     }
 
+    //printf("%s\n", strSHA2("../tests/for_testing_hash.txt"));
+
+
+
 //  PRINT SUMMARY IFF quiet_mode = false
 //  TODO THINK ABOUT CONTROL FLOW
 //  IF quiet_mode == true THIS WILL EXIT PROGRAM AND NOTHING
 //  BELOW WILL EXECUTE. ie. THINK ABOUT - IF WE WANT MULTIPLE OPTIONS TO EXECUTE 
     if( quiet_mode ){
         quiet_mode_summary();
+    }
+    else if( list_hash ){
+        print_matching_hash(hash_table);
+    }
+    else if( find_file_mode ){
+        print_matching_files(hash_table);
     }
     else{
         print_dir_summary();
