@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "duplicates.h"
+#include "globals.h"
+#include "list.h"
 
 //  ON LINUX WE NEED TO PROTOTYPE THE (NON-STANDARD) strdup() FUNCTION 
 //  WHY?  https://stackoverflow.com/questions/32944390/what-is-the-rationale-for-not-including-strdup-in-the-c-standard
@@ -119,6 +120,21 @@ bool list_find(LIST *list, char *incoming_pathname)
     return false;
 }
 
+//  DETERMINE IF A REQUIRED HASH (OF A FILE) IS STORED IN A GIVEN LIST
+bool list_find_hash(LIST *list, char *incoming_hash)
+{   
+    bool found_flag = false;
+    while(list != NULL) {
+        if( (strcmp(list->file_stats->hash, incoming_hash) == 0) ){
+            found_hash = list_add(found_hash, list->file_stats);
+            ++found_hash_count;
+            found_flag = true;
+        }
+	    list	= list->next;
+    }
+    return found_flag;
+}
+
 
 //  ALLOCATE SPACE FOR A NEW LIST ITEM, TESTING THAT ALLOCATION SUCCEEDS
 LIST *list_new_item(FILES *new_file)
@@ -149,12 +165,8 @@ void list_print(LIST *list)
 {
     if(list != NULL) {
         while(list != NULL) {
-	    printf("(%s-%i-%s)", list->file_stats->pathname, list->file_stats->bytesize, list->file_stats->hash);
-	    if(list->next != NULL) {
-	        printf(" -> ");
-            }
+	    printf("%s\n", list->file_stats->pathname);
 	    list	= list->next;
         }
-	printf("\n");
     }
 }
