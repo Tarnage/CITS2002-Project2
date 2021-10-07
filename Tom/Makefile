@@ -1,6 +1,6 @@
 # defining headers
 PROJECT = duplicates
-HEADERS = list.h structures.h globals.h hashtable.h strSHA2.h duplicates.h
+HEADERS = $(PROJECT).h
 OBJ 	= duplicates.o hashtable.o list.o strSHA2.o read_dir.o
 
 C11		= cc -std=c11

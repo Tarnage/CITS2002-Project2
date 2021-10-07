@@ -111,7 +111,7 @@ void scan_dir_recur(char *dirname)
 // NEEDED TO CORRECTLY IDENITFY SUB-DIRECTORIES
     if((getcwd(current_path, MAXPATHLEN)) == NULL)
         exit(EXIT_FAILURE);
-
+    
 
 //  READ FROM THE REQUIRED DIRECTORY, UNTIL WE REACH ITS END
     while((dp = readdir(dirp)) != NULL) {
@@ -142,7 +142,9 @@ void scan_dir_recur(char *dirname)
                     (strcmp(dp->d_name, ".") != 0 && strcmp(dp->d_name, "..") != 0) ){
             
             // FOR TESTING
-            //printf("d_type: %i\tis_reg: %i\t%s\n", S_ISDIR(stat_info.st_mode), S_ISREG(stat_info.st_mode), pathname);
+            printf("d_type: %i\tis_reg: %i\t%s\n", S_ISDIR(stat_info.st_mode), S_ISREG(stat_info.st_mode), pathname);
+            //TESTING
+            printf("%s\n",getcwd(current_path, MAXPATHLEN));
 
 //  EXTEND OUR ARRAY OF STRUCTURES BY ONE ELEMENT
             files                   = realloc(files, (nfiles+1)*sizeof(files[0]));
