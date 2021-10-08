@@ -16,7 +16,7 @@ bool    list_dupes          = false;
 bool    list_hash           = false;
 bool    find_file_mode      = false;
 int     pathname_len;
-char    *cwd;
+char    *iwd;
 
 char    *hash;
 char    *find_me;
@@ -166,16 +166,16 @@ int main(int argc, char *argv[])
                 exit(EXIT_FAILURE);
         }
     }
-//  SAVE CURRENT WORKING DIR
-    cwd = argv[optind];
+//  SAVE INCOMING WORKING DIR
+    iwd = argv[optind];
 // SAVE THE SIZE OF THE PATHNAME TO GET THE RELATIVE PATHNAME OF A FILE
-    pathname_len = strlen(cwd);
+    pathname_len = strlen(iwd);
 
 
 //  INITIALIZE HASHTABLE FOR CHECKING DUPLICATES
     HASHTABLE   *hash_table = hashtable_new();
 
-    scan_dir_recur(cwd);
+    scan_dir_recur(iwd);
     //scan_dir_recur("../tests");
     //scan_dir_recur("..");
     //scan_dir_recur("/mnt/d/Github/CITS2002-Project2/tests");
