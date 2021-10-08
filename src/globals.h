@@ -17,6 +17,7 @@ int             dupe_count; // used to dynamically allocate **dupes
 LIST           *found_hash;
 int             found_hash_count; // defned in duplicates.c and incremented in list.c
 bool            find_file_mode; // 
+char           *find_me_pathname;
 char           *find_me;
 char           *find_me_hash;
 #endif

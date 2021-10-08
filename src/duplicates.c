@@ -24,6 +24,7 @@ char    *find_me;
 char    *find_me_hash;
 LIST    **dupes             = NULL;
 LIST    *found_hash         = NULL;
+char    *find_me_file;
 
 
 void usage(char *progname) {
@@ -82,7 +83,9 @@ void print_matching_files(HASHTABLE *incoming_table)
 
     LIST *location = incoming_table[h];
     while(location != NULL ){
-        if(strcmp(location->file_stats->hash, find_me_hash) == 0 ){
+        printf("CHECK1\n, %s\n",find_me_pathname);
+        if( (strcmp(location->file_stats->hash, find_me_hash) == 0 ) &&
+                (strcmp(find_me_pathname, location->file_stats->pathname) != 0) ){
             char *pName = location->file_stats->pathname + pathname_len;
 	        printf("%s\t", pName );
         }
