@@ -97,7 +97,7 @@ void scan_dir_recur(char *dirname)
 {
     DIR             *dirp;
     struct dirent   *dp;
-    char            current_path[MAXPATHLEN];
+    //char            current_path[MAXPATHLEN];
     
 
 //  ENSURE THAT WE CAN OPEN (read-only) THE REQUIRED DIRECTORY
@@ -109,8 +109,8 @@ void scan_dir_recur(char *dirname)
 
 // STORE CURRENT WORKING PATH
 // NEEDED TO CORRECTLY IDENITFY SUB-DIRECTORIES
-    if((getcwd(current_path, MAXPATHLEN)) == NULL)
-        exit(EXIT_FAILURE);
+    //if((getcwd(current_path, MAXPATHLEN)) == NULL)
+    //    exit(EXIT_FAILURE);
     
 
 //  READ FROM THE REQUIRED DIRECTORY, UNTIL WE REACH ITS END
@@ -120,7 +120,7 @@ void scan_dir_recur(char *dirname)
         char            pathname[MAXPATHLEN];
 
         //FOR TESTING
-        //printf("d_type: %i\tis_reg: %i\t%s\n", S_ISDIR(stat_info.st_mode), S_ISREG(stat_info.st_mode), dp->d_name);
+        printf("d_type: %i\tis_reg: %i\t%s\n", stat_info.st_mode, stat_info.st_mode, dp->d_name);
 
 //  SENDS FORMATTED STRING TO STRING POINTER POINTED BY pathname
         sprintf(pathname, "%s/%s", dirname, dp->d_name);
@@ -142,7 +142,7 @@ void scan_dir_recur(char *dirname)
                     (strcmp(dp->d_name, ".") != 0 && strcmp(dp->d_name, "..") != 0) ){
             
             // FOR TESTING
-            //printf("d_type: %i\tis_reg: %i\t%s\n", S_ISDIR(stat_info.st_mode), S_ISREG(stat_info.st_mode), pathname);
+            // printf("d_type: %i\tis_reg: %i\t%s\n", S_ISDIR(stat_info.st_mode), S_ISREG(stat_info.st_mode), pathname);
             //TESTING
             //printf("%s\n",getcwd(current_path, MAXPATHLEN));
 
@@ -167,6 +167,7 @@ void scan_dir_recur(char *dirname)
                 // IF CURRENT FILE IS find_me COPY ITS SHA2
                 if( strcmp(dp->d_name, find_me) ){
                     find_me_hash = strdup( strSHA2(pathname) );
+                    printf("%s\n",pathname);
                 }
             }
         }

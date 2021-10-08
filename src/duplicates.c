@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <getopt.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include "duplicates.h"
 #include "list.h"
@@ -15,6 +16,8 @@ bool    quiet_mode          = false;
 bool    list_dupes          = false;
 bool    list_hash           = false;
 bool    find_file_mode      = false;
+int     pathname_len;
+char    *cwd;
 
 char    *hash;
 char    *find_me;
@@ -64,23 +67,26 @@ void print_dupes(LIST *list)
 {
     if(list != NULL) {
         while(list != NULL) {
-	    printf("%s\t", list->file_stats->pathname );
-	    list	= list->next;
+            char *pName = list->file_stats->pathname + pathname_len;
+	        printf("%s\t", pName );
+	        list	= list->next;
         }
         printf("\n");
     }
 }
 
-
+//TODO CHECK IF FILE IS THE SAME
 void print_matching_files(HASHTABLE *incoming_table)
 {   
-    // IF nbytes DOES NOT EQUAL ubytes WE HAVE DUPLICATES
-    if( hashtable_find_hash(incoming_table, find_me_hash) ){
-        hashtable_print_hash(incoming_table, find_me_hash);
-        exit(EXIT_SUCCESS);
-    }
-    else{
-        exit(EXIT_FAILURE);
+    int32_t h	= hash_string(find_me_hash) % HASHTABLE_SIZE;
+
+    LIST *location = incoming_table[h];
+    while(location != NULL ){
+        if(strcmp(location->file_stats->hash, find_me_hash) == 0 ){
+            char *pName = location->file_stats->pathname + pathname_len;
+	        printf("%s\t", pName );
+        }
+        location	= location->next;
     }
 
 }
@@ -114,7 +120,7 @@ void quiet_mode_summary()
 int main(int argc, char *argv[])
 {
 //  ENSURE THAT PROGRAM HAS CORRECT NUMBER OF ARGUMENTS
-    if (argc > 10) {
+    if (argc < 2) {
         usage(argv[0]);
     }
     else {
@@ -136,6 +142,7 @@ int main(int argc, char *argv[])
                 printf("Option [-f] was selected\n");
                 find_file_mode = true;
                 find_me = optarg;
+                printf("%s\n", find_me);
                 break;
             case 'h':
                 printf("Option [-h] was selected\n");
@@ -158,11 +165,17 @@ int main(int argc, char *argv[])
                 exit(EXIT_FAILURE);
         }
     }
+//  SAVE CURRENT WORKING DIR
+    cwd = argv[optind];
+// SAVE THE SIZE OF THE PATHNAME TO GET THE RELATIVE PATHNAME OF A FILE
+    pathname_len = strlen(cwd);
+
+
 //  INITIALIZE HASHTABLE FOR CHECKING DUPLICATES
     HASHTABLE   *hash_table = hashtable_new();
 
-    //scan_dir_recur("TEST_DOESNT_EXIST");
-    scan_dir_recur("../tests");
+    scan_dir_recur(cwd);
+    //scan_dir_recur("../tests");
     //scan_dir_recur("..");
     //scan_dir_recur("/mnt/d/Github/CITS2002-Project2/tests");
     //scan_dir_recur("/mnt/d/Github/CITS2002-Project2/Tom");
@@ -170,8 +183,8 @@ int main(int argc, char *argv[])
 //  ADD ALL FILES TO hash_table TO CHECK FOR DUPLICATES
     FILES *ptemp = files;               // store start of files;
     for(int i = 0; i < nfiles; ++i){
-        hashtable_add(hash_table, files);
-        ++files;
+       hashtable_add(hash_table, files);
+       ++files;
     }
     files = ptemp;                      // return files back to start
 
@@ -208,8 +221,8 @@ int main(int argc, char *argv[])
     else{
         print_dir_summary();
     }
-//  TERMINATE PROGRAM, INDICATING SUCCESS
-        exit(EXIT_SUCCESS);
-    }
+// //  TERMINATE PROGRAM, INDICATING SUCCESS
+         exit(EXIT_SUCCESS);
+     }
     return 0;
 }

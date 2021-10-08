@@ -15,6 +15,7 @@ bool    quiet_mode          = false;
 bool    list_dupes          = false;
 bool    list_hash           = false;
 bool    find_file_mode      = false;
+int     pathname_len;
 
 char    *hash;
 char    *find_me;
@@ -162,9 +163,9 @@ int main(int argc, char *argv[])
     HASHTABLE   *hash_table = hashtable_new();
 
     //scan_dir_recur("TEST_DOESNT_EXIST");
-    scan_dir_recur("../tests");
+    //scan_dir_recur("../tests");
     //scan_dir_recur("..");
-    //scan_dir_recur("/mnt/d/Github/CITS2002-Project2/tests");
+    scan_dir_recur("/Users/tomnguyen/GitHubCode/CITS2002-Project2/tests");
     //scan_dir_recur("/mnt/d/Github/CITS2002-Project2/Tom");
 
 //  ADD ALL FILES TO hash_table TO CHECK FOR DUPLICATES

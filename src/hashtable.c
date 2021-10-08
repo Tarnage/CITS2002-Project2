@@ -12,11 +12,6 @@
 extern	char	*strdup(char *string);
 #endif
 
-
-//  RESEARCH SHOWS THAT USING PRIME-NUMBERS CAN IMPROVE PERFORMANCE
-//  c.f.  https://www.quora.com/Why-should-the-size-of-a-hash-table-be-a-prime-number
-#define	HASHTABLE_SIZE		2551
-
 //  --------------------------------------------------------------------
 
 //  FUNCTION hash_string() ACCEPTS A STRING PARAMETER,

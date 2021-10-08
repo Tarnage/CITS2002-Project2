@@ -165,8 +165,9 @@ void scan_dir_recur(char *dirname)
 //  DO A CHECK IF WE ARE IN find_file_mode
             if( find_file_mode ){
                 // IF CURRENT FILE IS find_me COPY ITS SHA2
-                if( strcmp(dp->d_name, find_me) ){
+                if( strcmp(dp->d_name, find_me) == 0){
                     find_me_hash = strdup( strSHA2(pathname) );
+                    printf("%s\n",pathname);
                 }
             }
         }

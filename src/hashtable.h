@@ -2,6 +2,10 @@
 #define HASHTABLE_H
 #include "structures.h"
 
+//  RESEARCH SHOWS THAT USING PRIME-NUMBERS CAN IMPROVE PERFORMANCE
+//  c.f.  https://www.quora.com/Why-should-the-size-of-a-hash-table-be-a-prime-number
+#define	HASHTABLE_SIZE		2551
+
 //  WE DEFINE A HASHTABLE AS A (WILL BE, DYNAMICALLY ALLOCATED) ARRAY OF LISTs
 typedef	LIST * HASHTABLE;
 
