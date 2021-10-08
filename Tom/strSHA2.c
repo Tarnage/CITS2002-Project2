@@ -36,8 +36,6 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-#include "duplicates.h"
-
 #ifndef uint8
 #define uint8  unsigned char
 #endif

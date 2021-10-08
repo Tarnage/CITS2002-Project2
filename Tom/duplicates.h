@@ -4,11 +4,10 @@
 //#include <sys/stat.h>
 #ifndef DUPLICATES_H
 #define DUPLICATES_H
+
 #include "structures.h"
 #include "globals.h"
-#include "strSHA2.h"
-#include "advanced.h"
-
+//#include "strSHA2.h"
 #include <time.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -16,10 +15,15 @@
 //  DEFINE OPTLIST HERE
 #define	OPTLIST		"f:h:aAlmq"
 
+#ifndef STRCMP
+#define STRCMP(p, q)   strcmp(p, q) == 0
+#endif
+
 // DEFINED in duplicates.c
 bool           ignore_mode;
 bool           quiet_mode;
 bool           list_dupes;
+bool           list_hash;
 
 // -----------------------------------------------------------------------------------------------
 //  THESE FUNCTIONS ARE DECLARED HERE, AND DEFINED IN read_dir.c :

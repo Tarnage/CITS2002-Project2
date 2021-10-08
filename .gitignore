@@ -19,3 +19,4 @@ src/list.o
 src/strSHA2.o
 src/read_dir.o
 src/hashtable.o
+Tom/globals.o

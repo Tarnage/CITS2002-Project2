@@ -1,3 +1,4 @@
+#include "strSHA2.h"
 /*
     CITS2002 students - this file provides an implementation of the
     function with this protoype:

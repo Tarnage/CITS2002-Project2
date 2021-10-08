@@ -5,9 +5,6 @@
 #ifndef DUPLICATES_H
 #define DUPLICATES_H
 #include "structures.h"
-#include "globals.h"
-#include "strSHA2.h"
-#include "advanced.h"
 
 #include <time.h>
 #include <stdbool.h>
