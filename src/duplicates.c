@@ -18,6 +18,7 @@ bool    list_hash           = false;
 bool    find_file_mode      = false;
 int     pathname_len;
 char    *cwd;
+FILES   *ptemp              = NULL;
 
 char    *hash;
 char    *find_me;

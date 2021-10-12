@@ -22,16 +22,6 @@ extern         char *strdup(const char *s);
 // 4 Represents a folder 
 #define DT_DIR 4
 
-FILES           *files  = NULL;
-// COUNT TOTAL NUMBER OF FILES FOUND
-int             nfiles  = 0;
-// TOTAL BYTES OF ALL FILES FOUND
-int             nbytes  = 0;
-// TOTAL NUMBER OF UNIQUE FILES
-int             ufiles  = 0;
-// TOTAL BYTES OF UNIQUE FILES
-int             ubytes  = 0;
-
 //  FILE IS IGNORED IF TRUE AND FILE (.) MEANING ITS A HIDDEN FILE
 //  TODO do we ignore dot(.) and dot-dot(..)
 bool file_ignored(const char *name)

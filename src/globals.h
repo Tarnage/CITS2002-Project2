@@ -1,8 +1,8 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#include "stdbool.h"
-//#include "structures.h"
+#include <stdbool.h>
+#include "structures.h"
 // -----------------------------------------------------------------------------------------------
 // DECLARE GLOBAL VARIABLES
 
@@ -10,6 +10,7 @@
 // TODO maybe define in duplicates.c instead? because we may need access to hashtable to check for dupes
 //bool            ignore_mode; //TODO something with this
 
+FILES           *files; 
 int             nfiles;  // nfiles incremented in read_dir.c
 int             nbytes;  // nbytes incremented in read_dir.c
 int             ufiles;  // ufiles calculated in duplicates.c
