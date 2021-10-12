@@ -73,25 +73,25 @@ void print_dupes(LIST *list)
     }
 }
 
-//TODO CHECK IF FILE IS THE SAME
+//PRINTS DUPLICATES WHICH MATCH A GIVEN FILE IN THE COMMAND-LINE
 void print_matching_files(HASHTABLE *incoming_table)
 {   
     int32_t h	= hash_string(wanted_hash) % HASHTABLE_SIZE;
 
     LIST *location = incoming_table[h];
     while(location != NULL ){
-        printf("CHECK1\n, %s\n",wanted_pathname);
+        // printf("CHECK1\n, %s\n",wanted_pathname);
         if( (strcmp(location->file_stats->hash, wanted_hash) == 0 ) &&
                 (strcmp(wanted_pathname, location->file_stats->pathname) != 0) ){
             char *pName = location->file_stats->pathname + pathname_len;
-	        printf("%s\t", pName );
+	        printf("%s\n", pName );
         }
         location	= location->next;
     }
 
 }
 
-
+//PRINTS DUPLICATES WHICH MATCH A GIVEN HASH IN THE COMMAND-LINE
 void print_matching_hash(HASHTABLE *incoming_table)
 {
     if( hashtable_find_hash(incoming_table, hash) ) {
@@ -142,7 +142,7 @@ int main(int argc, char *argv[])
                 printf("Option [-f] was selected\n");
                 find_file_mode = true;
                 wanted_file_name = optarg;
-                printf("%s\n", wanted_file_name);
+                //printf("%s\n", wanted_file_name);
                 break;
             case 'h':
                 printf("Option [-h] was selected\n");
@@ -205,24 +205,31 @@ int main(int argc, char *argv[])
 
 
 
-//  PRINT SUMMARY IFF quiet_mode = false
-//  TODO THINK ABOUT CONTROL FLOW
-//  IF quiet_mode == true THIS WILL EXIT PROGRAM AND NOTHING
-//  BELOW WILL EXECUTE. ie. THINK ABOUT - IF WE WANT MULTIPLE OPTIONS TO EXECUTE 
-    if( quiet_mode ){
+    //  PRINT SUMMARY IF quiet_mode = false
+    //  TODO THINK ABOUT CONTROL FLOW
+    //  IF quiet_mode == true THIS WILL EXIT PROGRAM AND NOTHING
+    //  BELOW WILL EXECUTE. ie. THINK ABOUT - IF WE WANT MULTIPLE OPTIONS TO EXECUTE 
+    if( quiet_mode )
+    {
         quiet_mode_summary();
     }
-    else if( list_hash ){
-        print_matching_hash(hash_table);
+    // -f AND -h ARE CONTRADICTORY; ONE OR THE OTHER WILL RUN 
+    else if( list_hash || find_file_mode ){
+        if(list_hash)
+        {
+            print_matching_hash(hash_table);
+        }
+        else if (find_file_mode)
+        {
+            print_matching_files(hash_table);
+        }
     }
-    else if( find_file_mode ){
-        print_matching_files(hash_table);
-    }
-    else{
+    else
+    {
         print_dir_summary();
     }
 // //  TERMINATE PROGRAM, INDICATING SUCCESS
          exit(EXIT_SUCCESS);
-     }
+    }
     return 0;
 }
