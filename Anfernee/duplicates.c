@@ -19,9 +19,7 @@ char    *cwd;
 FILES   *ptemp              = NULL;
 
 char    *hash;
-char    *find_me;
-char    *wanted_hash;
-LIST    **dupes             = NULL;
+LIST    **duplicates        = NULL;
 LIST    *found_hash         = NULL;
 char    *find_me_file;
 
@@ -143,8 +141,8 @@ int main(int argc, char *argv[])
             case 'f':
                 printf("Option [-f] was selected\n");
                 find_file_mode = true;
-                find_me = optarg;
-                printf("%s\n", find_me);
+                wanted_file_name = optarg;
+                printf("%s\n", wanted_file_name);
                 break;
             case 'h':
                 printf("Option [-h] was selected\n");
@@ -199,7 +197,7 @@ int main(int argc, char *argv[])
 // PRINTS DUPE IF OPT -l IS SELECTED
     if( list_dupes ){
         for(int i = 0; i < dupe_count; ++i){
-            print_dupes(dupes[i]);
+            print_dupes(duplicates[i]);
         }
     }
 

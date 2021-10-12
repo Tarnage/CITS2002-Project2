@@ -154,7 +154,7 @@ void scan_dir_recur(char *dirname)
 //  DO A CHECK IF WE ARE IN find_file_mode
             if( find_file_mode ){
                 // IF CURRENT FILE IS find_me COPY ITS SHA2
-                if( strcmp(dp->d_name, find_me) == 0){
+                if( strcmp(dp->d_name, wanted_file_name) == 0){
                     wanted_hash = strdup( strSHA2(pathname) );
                     wanted_pathname = files[nfiles].pathname;
                 }

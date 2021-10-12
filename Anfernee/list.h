@@ -26,6 +26,6 @@ extern    bool       list_find_hash(LIST *, char *);
 extern	  void	     list_print(LIST *);
 
 // GLOBAL VARIABLES 
-LIST           **dupes;
+LIST           **duplicates;
 
 #endif

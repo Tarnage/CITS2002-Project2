@@ -24,7 +24,7 @@ LIST           *found_hash;
 int             found_hash_count; // defned in duplicates.c and incremented in list.c
 bool            find_file_mode; // 
 char           *wanted_pathname;
-char           *find_me;
+char           *wanted_file_name;
 char           *wanted_hash;
 bool           ignore_mode;
 bool           quiet_mode;

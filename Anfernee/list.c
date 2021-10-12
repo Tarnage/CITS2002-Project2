@@ -59,10 +59,10 @@ void list_find_dupe(LIST *list)
 
     if( new_dupes != NULL ){
     // realloc dupes array
-    dupes = realloc(dupes, (dupe_count + 1)*sizeof(FILES));
-    CHECK_ALLOC(dupes);
+    duplicates = realloc(duplicates, (dupe_count + 1)*sizeof(FILES));
+    CHECK_ALLOC(duplicates);
     // list to dupes
-    dupes[dupe_count] = new_dupes;
+    duplicates[dupe_count] = new_dupes;
     //increment dupe count
     ++dupe_count;
     }
