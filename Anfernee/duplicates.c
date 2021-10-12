@@ -2,18 +2,26 @@
 #include <stdlib.h>
 #include <getopt.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include "duplicates.h"
 #include "list.h"
 #include "hashtable.h"
 
-
-
 // GLOBALS
-bool ignore_mode = true;
-bool quiet_mode  = false;
-bool list_dupes  = false;
-LIST **dupes     = NULL;
+bool    ignore_mode         = true;
+bool    quiet_mode          = false;
+bool    list_dupes          = false;
+bool    list_hash           = false;
+bool    find_file_mode      = false;
+int     pathname_len;
+char    *cwd;
+FILES   *ptemp              = NULL;
+
+char    *hash;
+LIST    **duplicates        = NULL;
+LIST    *found_hash         = NULL;
+char    *find_me_file;
 
 
 void usage(char *progname) {
@@ -57,10 +65,41 @@ void print_dupes(LIST *list)
 {
     if(list != NULL) {
         while(list != NULL) {
-	    printf("%s\t", list->file_stats->pathname );
-	    list	= list->next;
+            char *pName = list->file_stats->pathname + pathname_len;
+	        printf("%s\t", pName );
+	        list	= list->next;
         }
         printf("\n");
+    }
+}
+
+//PRINTS DUPLICATES WHICH MATCH A GIVEN FILE IN THE COMMAND-LINE
+void print_matching_files(HASHTABLE *incoming_table)
+{   
+    int32_t h	= hash_string(wanted_hash) % HASHTABLE_SIZE;
+
+    LIST *location = incoming_table[h];
+    while(location != NULL ){
+        // printf("CHECK1\n, %s\n",wanted_pathname);
+        if( (strcmp(location->file_stats->hash, wanted_hash) == 0 ) &&
+                (strcmp(wanted_pathname, location->file_stats->pathname) != 0) ){
+            char *pName = location->file_stats->pathname + pathname_len;
+	        printf("%s\n", pName );
+        }
+        location	= location->next;
+    }
+
+}
+
+//PRINTS DUPLICATES WHICH MATCH A GIVEN HASH IN THE COMMAND-LINE
+void print_matching_hash(HASHTABLE *incoming_table)
+{
+    if( hashtable_find_hash(incoming_table, hash) ) {
+        list_print(found_hash);
+        exit(EXIT_SUCCESS);
+    }
+    else{
+        exit(EXIT_FAILURE);
     }
 }
 
@@ -68,8 +107,9 @@ void print_dupes(LIST *list)
 void quiet_mode_summary()
 {   
     // IF nbytes DOES NOT EQUAL ubytes WE HAVE DUPLICATES
+    // TODO COULD DO A "PROPER" CHECK FOR DUPES SINCE WE ALREADY COUNT DUPES
     if(nbytes != ubytes){
-        printf("DUPLICATES FILES FOUND\n");
+        printf("DUPLICATE FILES FOUND\n");
         exit(EXIT_FAILURE);
     }
     printf("SUCCESS\n");
@@ -80,7 +120,7 @@ void quiet_mode_summary()
 int main(int argc, char *argv[])
 {
 //  ENSURE THAT PROGRAM HAS CORRECT NUMBER OF ARGUMENTS
-    if (argc > 10) {
+    if (argc < 2) {
         usage(argv[0]);
     }
     else {
@@ -100,6 +140,14 @@ int main(int argc, char *argv[])
                 break;
             case 'f':
                 printf("Option [-f] was selected\n");
+                find_file_mode = true;
+                wanted_file_name = optarg;
+                //printf("%s\n", wanted_file_name);
+                break;
+            case 'h':
+                printf("Option [-h] was selected\n");
+                list_hash = true;
+                hash = optarg;
                 break;
             case 'l':
                 printf("Option [-l] was selected\n");
@@ -117,10 +165,17 @@ int main(int argc, char *argv[])
                 exit(EXIT_FAILURE);
         }
     }
+//  SAVE CURRENT WORKING DIR
+    cwd = argv[optind];
+// SAVE THE SIZE OF THE PATHNAME TO GET THE RELATIVE PATHNAME OF A FILE
+    pathname_len = strlen(cwd);
+
+
 //  INITIALIZE HASHTABLE FOR CHECKING DUPLICATES
     HASHTABLE   *hash_table = hashtable_new();
 
-    scan_dir_recur("../tests");
+    scan_dir_recur(cwd);
+    //scan_dir_recur("../tests");
     //scan_dir_recur("..");
     //scan_dir_recur("/mnt/d/Github/CITS2002-Project2/tests");
     //scan_dir_recur("/mnt/d/Github/CITS2002-Project2/Tom");
@@ -128,13 +183,13 @@ int main(int argc, char *argv[])
 //  ADD ALL FILES TO hash_table TO CHECK FOR DUPLICATES
     FILES *ptemp = files;               // store start of files;
     for(int i = 0; i < nfiles; ++i){
-        hashtable_add(hash_table, files);
-        ++files;
+       hashtable_add(hash_table, files);
+       ++files;
     }
     files = ptemp;                      // return files back to start
 
     //hashtable_print(hash_table);
-    hashtable_count_dupes(hash_table);
+    hashtable_find_dup(hash_table);
     
     ufiles = nfiles - ufiles;
     ubytes = nbytes - ubytes;
@@ -142,22 +197,39 @@ int main(int argc, char *argv[])
 // PRINTS DUPE IF OPT -l IS SELECTED
     if( list_dupes ){
         for(int i = 0; i < dupe_count; ++i){
-            print_dupes(dupes[i]);
+            print_dupes(duplicates[i]);
         }
     }
 
-//  PRINT SUMMARY IFF quiet_mode = false
-//  TODO THINK ABOUT CONTROL FLOW
-//  IF quiet_mode == true THIS WILL EXIT PROGRAM AND NOTHING
-//  BELOW WILL EXECUTE. ie. THINK ABOUT - IF WE WANT MULTIPLE OPTIONS TO EXECUTE 
-    if( quiet_mode ){
+    //printf("%s\n", strSHA2("../tests/for_testing_hash.txt"));
+
+
+
+    //  PRINT SUMMARY IF quiet_mode = false
+    //  TODO THINK ABOUT CONTROL FLOW
+    //  IF quiet_mode == true THIS WILL EXIT PROGRAM AND NOTHING
+    //  BELOW WILL EXECUTE. ie. THINK ABOUT - IF WE WANT MULTIPLE OPTIONS TO EXECUTE 
+    if( quiet_mode )
+    {
         quiet_mode_summary();
     }
-    else{
+    // -f AND -h ARE CONTRADICTORY; ONE OR THE OTHER WILL RUN 
+    else if( list_hash || find_file_mode ){
+        if(list_hash)
+        {
+            print_matching_hash(hash_table);
+        }
+        else if (find_file_mode)
+        {
+            print_matching_files(hash_table);
+        }
+    }
+    else
+    {
         print_dir_summary();
     }
-//  TERMINATE PROGRAM, INDICATING SUCCESS
-        exit(EXIT_SUCCESS);
+// //  TERMINATE PROGRAM, INDICATING SUCCESS
+         exit(EXIT_SUCCESS);
     }
     return 0;
 }
