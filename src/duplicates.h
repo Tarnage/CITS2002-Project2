@@ -5,7 +5,7 @@
 #ifndef DUPLICATES_H
 #define DUPLICATES_H
 #include "structures.h"
-
+#include "globals.h"
 #include <time.h>
 #include <stdbool.h>
 #include <stdint.h>
