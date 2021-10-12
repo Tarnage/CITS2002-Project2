@@ -4,7 +4,6 @@
 #include <stdbool.h>
 #include <string.h>
 
-//#include "globals.h"
 #include "duplicates.h"
 #include "list.h"
 #include "hashtable.h"
@@ -23,6 +22,7 @@ char    *find_me;
 char    *find_me_hash;
 LIST    **dupes             = NULL;
 int     dupe_count; // used to dynamically allocate **dupes
+int     found_hash_count; // defned in duplicates.c and incremented in list.c
 LIST    *found_hash         = NULL;
 char    *find_me_file;
 FILES   *files;   // array of found files
@@ -60,6 +60,72 @@ Locate and report duplicate files in, and below, a named directory.\n\
 "), stdout);
 
    exit(EXIT_FAILURE);
+}
+
+
+//  DETERMINE IF A REQUIRED ITEM (A FILE) IS A DUPELICATE
+void list_find_dupe(LIST *list)
+{   
+    LIST *new_dupes = list_new();
+    LIST *pCurrent = list_new();
+
+//  ONLY ITERATE IF WE HAVE >= 2 ITEMS IN THE LIST
+    while( list != NULL && list->next != NULL){
+        
+        pCurrent = list->next;
+
+        // CHECKS FIRST TWO AND ADDS THEM TO LIST IFF THEY ARE DUPES
+        if( STRCMP(list->file_stats->hash, pCurrent->file_stats->hash) ){
+            new_dupes = list_add(new_dupes, list->file_stats);
+            new_dupes = list_add(new_dupes, pCurrent->file_stats);
+            ubytes += pCurrent->file_stats->bytesize;
+            ++ufiles;
+        }
+        // WE CAN INCREMENT pCurrent HERE
+        pCurrent = pCurrent->next;
+
+        //  IFF THERE ARE MORE THAN 2 ITEMS ITERTATES THROUGH LIST TO FIND DUPES
+        while(pCurrent != NULL){
+
+            if( STRCMP(list->file_stats->hash, pCurrent->file_stats->hash) ) {
+
+                new_dupes = list_add(new_dupes, pCurrent->file_stats);
+                ubytes += pCurrent->file_stats->bytesize;
+                ++ufiles;
+            }
+            pCurrent	= pCurrent->next;
+        }
+        
+        list = list->next;
+        pCurrent = list->next;
+            
+    }
+
+    if( new_dupes != NULL ){
+    // realloc dupes array
+    dupes = realloc(dupes, (dupe_count + 1)*sizeof(FILES));
+    CHECK_ALLOC(dupes);
+    // list to dupes
+    dupes[dupe_count] = new_dupes;
+    //increment dupe count
+    ++dupe_count;
+    }
+}
+
+
+//  DETERMINE IF A REQUIRED HASH (OF A FILE) IS STORED IN A GIVEN LIST
+bool list_find_hash(LIST *list, char *incoming_hash)
+{   
+    bool found_flag = false;
+    while(list != NULL) {
+        if( STRCMP(list->file_stats->hash, incoming_hash) ){
+            found_hash = list_add(found_hash, list->file_stats);
+            ++found_hash_count;
+            found_flag = true;
+        }
+	    list	= list->next;
+    }
+    return found_flag;
 }
 
 

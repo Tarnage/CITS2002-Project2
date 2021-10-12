@@ -30,6 +30,7 @@ FILES         *found_file;
 
 //OPTION -h
 char          *find_me_hash;
+int            found_hash_count;
 
 // OPTION VARIABLES
 
