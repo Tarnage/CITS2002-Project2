@@ -1,7 +1,7 @@
 # defining headers
 PROJECT = duplicates
 HEADERS = $(PROJECT).h
-OBJ 	= globals.o read_dir.o duplicates.o hashtable.o list.o strSHA2.o 
+OBJ 	= read_dir.o duplicates.o hashtable.o list.o strSHA2.o 
 
 C11		= cc -std=c11
 CFLAGS 	= -Wall -Werror -pedantic

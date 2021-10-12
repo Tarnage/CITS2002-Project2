@@ -6,7 +6,7 @@
 #define DUPLICATES_H
 
 #include "structures.h"
-#include "globals.h"
+//#include "globals.h"
 //#include "strSHA2.h"
 #include <time.h>
 #include <stdbool.h>
@@ -19,13 +19,33 @@
 #define STRCMP(p, q)   strcmp(p, q) == 0
 #endif
 
-// DEFINED in duplicates.c
+// OPTION MODES DEFINED IN duplicates.c
 bool           ignore_mode;
-bool           quiet_mode;
-bool           list_dupes;
-bool           list_hash;
+
+// OPTION -f
+bool           find_file_mode;
+char          *find_me;
+char          *find_me_pathname;
+FILES         *found_file;
+
+//OPTION -h
+char          *find_me_hash;
+
+// OPTION VARIABLES
+
+
+//------------------------------------------------------------------------------------------------
+// COUNTERS FOR DEFAULT SUMMARY 
+
+int             nfiles;  // nfiles incremented in read_dir.c
+int             nbytes;  // nbytes incremented in read_dir.c
+int             ufiles;  // ufiles calculated in duplicates.c
+int             ubytes;  // ubytes calculated in duplicates.c
 
 // -----------------------------------------------------------------------------------------------
+
+
+
 //  THESE FUNCTIONS ARE DECLARED HERE, AND DEFINED IN read_dir.c :
 
 // READS DIRECTORY AND START COUNTS
@@ -44,14 +64,9 @@ extern      void      print_dir_summary(void);
 extern      void      list_all_files(void);
 
 // PRINT DUPES
-extern     void      print_dupes(LIST *list);
+extern      void      print_dupes(LIST *list);
 
 
 // -----------------------------------------------------------------------------------------------
-//  THESE FUNCTIONS ARE DECLARED HERE, AND DEFINED IN duplicates.c :
 
-extern    void      quiet_mode_summary(void);
-
-//  PRINT EACH DUPE (THE RELATIVE PATHNAME) IN A GIVEN LIST TO stdout
-extern    void      print_dupes(LIST *);
 #endif

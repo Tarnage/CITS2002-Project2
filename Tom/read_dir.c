@@ -1,18 +1,14 @@
 #include  <stdio.h>
-// #include  <stdbool.h>
 #include  <stdlib.h>
-// #include  <sys/types.h>
 #include  <sys/stat.h>
 #include  <dirent.h>
 #include  <sys/param.h>
 // #include  <time.h>
 #include  <string.h>
-// #include  <getopt.h>
 // #include  <unistd.h>
 
 #include "duplicates.h" // only included for ignore mode
 #include "list.h"
-#include "globals.h"
 #include "strSHA2.h"
 
 #if     defined(__linux__)
@@ -111,8 +107,8 @@ void scan_dir_recur(char *dirname)
             if( find_file_mode ){
                 // IF CURRENT FILE IS find_me COPY ITS SHA2
                 if( STRCMP(dp->d_name, find_me) ){
-                    find_me_hash = strdup( strSHA2(pathname) );
-                    find_me_pathname = files[nfiles].pathname;
+                    find_me_hash = strdup( strSHA2(pathname) ); // IF WE FIND THE FILE SAVE ITS HASH
+                    find_me_pathname = files[nfiles].pathname; // AND SAVE ITS ABSOLUTE PATH NAME
                 }
             }
 

@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <string.h>
 
-#include "globals.h"
+//#include "globals.h"
 #include "duplicates.h"
 #include "list.h"
 #include "hashtable.h"
@@ -22,9 +22,10 @@ char    *hash;
 char    *find_me;
 char    *find_me_hash;
 LIST    **dupes             = NULL;
+int     dupe_count; // used to dynamically allocate **dupes
 LIST    *found_hash         = NULL;
 char    *find_me_file;
-
+FILES   *files;   // array of found files
 
 void usage(char *progname) {
    //fprintf(stderr, USAGE_FMT, progname);
@@ -81,11 +82,11 @@ void print_matching_files(HASHTABLE *incoming_table)
     int32_t h	= hash_string(find_me_hash) % HASHTABLE_SIZE;
 
     LIST *location = incoming_table[h];
-    while(location != NULL ){
+    while(location != NULL){
         if( (STRCMP(location->file_stats->hash, find_me_hash)) &&
-                (STRCMP(find_me_pathname, location->file_stats->pathname)) ){
+                (!STRCMP(find_me_pathname, location->file_stats->pathname)) ){
             char *pName = location->file_stats->pathname + pathname_len;
-	        printf("%s\t", pName );
+	        printf("%s\n", pName );
         }
         location	= location->next;
     }
@@ -143,7 +144,6 @@ int main(int argc, char *argv[])
                 printf("Option [-f] was selected\n");
                 find_file_mode = true;
                 find_me = optarg;
-                printf("%s\n", find_me);
                 break;
             case 'h':
                 printf("Option [-h] was selected\n");
