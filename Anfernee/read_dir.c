@@ -12,7 +12,7 @@
 
 #include "duplicates.h"
 #include "list.h"
-#include "globals.h"
+#include "strSHA2.h"
 
 #if     defined(__linux__)
 extern         char *strdup(const char *s);
@@ -20,16 +20,6 @@ extern         char *strdup(const char *s);
 
 // 4 Represents a folder 
 #define DT_DIR 4
-
-FILES           *files  = NULL;
-// COUNT TOTAL NUMBER OF FILES FOUND
-int             nfiles  = 0;
-// TOTAL BYTES OF ALL FILES FOUND
-int             nbytes  = 0;
-// TOTAL NUMBER OF UNIQUE FILES
-int             ufiles  = 0;
-// TOTAL BYTES OF UNIQUE FILES
-int             ubytes  = 0;
 
 //  FILE IS IGNORED IF TRUE AND FILE (.) MEANING ITS A HIDDEN FILE
 //  TODO do we ignore dot(.) and dot-dot(..)
@@ -110,7 +100,7 @@ void scan_dir_recur(char *dirname)
 // NEEDED TO CORRECTLY IDENITFY SUB-DIRECTORIES
     if((getcwd(current_path, MAXPATHLEN)) == NULL)
         exit(EXIT_FAILURE);
-
+    
 
 //  READ FROM THE REQUIRED DIRECTORY, UNTIL WE REACH ITS END
     while((dp = readdir(dirp)) != NULL) {
@@ -141,7 +131,9 @@ void scan_dir_recur(char *dirname)
                     (strcmp(dp->d_name, ".") != 0 && strcmp(dp->d_name, "..") != 0) ){
             
             // FOR TESTING
-            //printf("d_type: %i\tis_reg: %i\t%s\n", S_ISDIR(stat_info.st_mode), S_ISREG(stat_info.st_mode), dp->d_name);
+            //printf("d_type: %i\tis_reg: %i\t%s\n", S_ISDIR(stat_info.st_mode), S_ISREG(stat_info.st_mode), pathname);
+            //TESTING
+            //printf("%s\n",getcwd(current_path, MAXPATHLEN));
 
 //  EXTEND OUR ARRAY OF STRUCTURES BY ONE ELEMENT
             files                   = realloc(files, (nfiles+1)*sizeof(files[0]));
@@ -157,6 +149,17 @@ void scan_dir_recur(char *dirname)
             files[nfiles].mtime     = stat_info.st_mtime;     // TODO maybe wont need this
             files[nfiles].bytesize  = stat_info.st_size;      // its byte size
             nbytes                 += stat_info.st_size;      // add to total bytes so far
+            
+
+//  DO A CHECK IF WE ARE IN find_file_mode
+            if( find_file_mode ){
+                // IF CURRENT FILE IS find_me COPY ITS SHA2
+                if( strcmp(dp->d_name, find_me) == 0){
+                    wanted_hash = strdup( strSHA2(pathname) );
+                    wanted_pathname = files[nfiles].pathname;
+                }
+            }
+
             ++nfiles;
         }
     }

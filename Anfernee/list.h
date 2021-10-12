@@ -17,7 +17,10 @@ extern	  LIST	     *list_add(LIST *, FILES *);
 extern	  void 	     list_find_dupe(LIST *);
 
 //  DETERMINE IF A REQUIRED ITEM (A FILE) IS STORED IN A GIVEN LIST
-extern    bool       list_find(LIST *, char *);
+extern    bool       list_find_pathname(LIST *, char *);
+
+//  DETERMINE IF A REQUIRED HASH (OF A FILE) IS STORED IN A GIVEN LIST
+extern    bool       list_find_hash(LIST *, char *);
 
 //  PRINT EACH ITEM (A STRING) IN A GIVEN LIST TO stdout
 extern	  void	     list_print(LIST *);

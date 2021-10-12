@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "globals.h"
 #include "list.h"
+#include "duplicates.h"
 
 //  ON LINUX WE NEED TO PROTOTYPE THE (NON-STANDARD) strdup() FUNCTION 
 //  WHY?  https://stackoverflow.com/questions/32944390/what-is-the-rationale-for-not-including-strdup-in-the-c-standard
@@ -109,7 +109,7 @@ void list_find_dupe(LIST *list)
 
 
 //  DETERMINE IF A REQUIRED ITEM (A FILE) IS STORED IN A GIVEN LIST
-bool list_find(LIST *list, char *incoming_pathname)
+bool list_find_pathname(LIST *list, char *incoming_pathname)
 {   
     while(list != NULL) {
         if( (strcmp(list->file_stats->pathname, incoming_pathname) == 0) ){
@@ -118,6 +118,21 @@ bool list_find(LIST *list, char *incoming_pathname)
 	    list	= list->next;
     }
     return false;
+}
+
+//  DETERMINE IF A REQUIRED HASH (OF A FILE) IS STORED IN A GIVEN LIST
+bool list_find_hash(LIST *list, char *incoming_hash)
+{   
+    bool found_flag = false;
+    while(list != NULL) {
+        if( (strcmp(list->file_stats->hash, incoming_hash) == 0) ){
+            found_hash = list_add(found_hash, list->file_stats);
+            ++found_hash_count;
+            found_flag = true;
+        }
+	    list	= list->next;
+    }
+    return found_flag;
 }
 
 
@@ -135,7 +150,7 @@ LIST *list_new_item(FILES *new_file)
 //  ADD A NEW (STRING) ITEM TO AN EXISTING LIST
 LIST *list_add(LIST *list, FILES *new_file)
 {    
-    if(list_find(list, new_file->pathname)) {            // only add each item once
+    if(list_find_pathname(list, new_file->pathname)) {            // only add each item once
         return list;
     }
     else {                                      // add new item to head of list
@@ -150,12 +165,8 @@ void list_print(LIST *list)
 {
     if(list != NULL) {
         while(list != NULL) {
-	    printf("(%s-%i-%s)", list->file_stats->pathname, list->file_stats->bytesize, list->file_stats->hash);
-	    if(list->next != NULL) {
-	        printf(" -> ");
-            }
+	    printf("%s\n", list->file_stats->pathname);
 	    list	= list->next;
         }
-	printf("\n");
     }
 }

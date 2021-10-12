@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "duplicates.h"
 #include "hashtable.h"
 #include "list.h"
 #include "strSHA2.h"
@@ -11,11 +12,6 @@
 #if	defined(__linux__)
 extern	char	*strdup(char *string);
 #endif
-
-
-//  RESEARCH SHOWS THAT USING PRIME-NUMBERS CAN IMPROVE PERFORMANCE
-//  c.f.  https://www.quora.com/Why-should-the-size-of-a-hash-table-be-a-prime-number
-#define	HASHTABLE_SIZE		2551
 
 //  --------------------------------------------------------------------
 
@@ -62,7 +58,15 @@ bool hashtable_find(HASHTABLE *hashtable, char *pathname)
     char *input_hash = strSHA2(pathname);
     uint32_t h	= hash_string(input_hash) % HASHTABLE_SIZE;     // choose list
     
-    return list_find(hashtable[h], pathname);
+    return list_find_pathname(hashtable[h], pathname);
+}
+
+//  DETERMINE IF A FILE STRUCT ALREADY EXISTS IN A GIVEN HASHTABLE
+bool hashtable_find_hash(HASHTABLE *hashtable, char *input_hash)
+{   
+    uint32_t h	= hash_string(input_hash) % HASHTABLE_SIZE;     // choose list
+    
+    return list_find_hash(hashtable[h], input_hash);
 }
 
 // DETERMINE IF FILE IS A DUPLICATE
@@ -74,7 +78,7 @@ bool hashtable_find(HASHTABLE *hashtable, char *pathname)
 // - do we want to loop through the whole hashtable after we read in the files or during?
 // - (CHILLI) how do we link() and unlink() a duplicate file?
 // - . and .. have the same hash values. are they considered duplicate? and do we count them as files, do we count their byte sizes
-void hashtable_count_dupes(HASHTABLE *hashtable)
+void hashtable_find_dup(HASHTABLE *hashtable)
 {   
     for(int i = 0; i < HASHTABLE_SIZE; ++i){
         list_find_dupe(hashtable[i]);
@@ -82,8 +86,15 @@ void hashtable_count_dupes(HASHTABLE *hashtable)
 }
 
 
+//  PRINTS HASHTABLE CONTENTS WITH GIVEN SHA2
+void hashtable_print_hash(HASHTABLE *hashtable, char *input_hash)
+{
+    uint32_t h	= hash_string(input_hash) % HASHTABLE_SIZE;
+    list_print(hashtable[h]);
+}
+
 //  PRINTS HASHTABLE CONTENTS
-void hashtable_print(HASHTABLE *hashtable)
+void hashtable_print_all(HASHTABLE *hashtable)
 {
     for(int i = 0; i < HASHTABLE_SIZE; ++i){
         list_print(hashtable[i]);
