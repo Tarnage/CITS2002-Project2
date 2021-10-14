@@ -3,13 +3,9 @@
 #include  <sys/stat.h>
 #include  <dirent.h>
 #include  <sys/param.h>
-// #include  <time.h>
 #include  <string.h>
-// #include  <unistd.h>
 
-#include "duplicates.h" // only included for ignore mode
-#include "list.h"
-#include "strSHA2.h"
+#include "duplicates.h"
 
 #if     defined(__linux__)
 extern         char *strdup(const char *s);
@@ -106,9 +102,9 @@ void scan_dir_recur(char *dirname)
 //  DO A CHECK IF WE ARE IN find_file_mode
             if( find_file_mode ){
                 // IF CURRENT FILE IS find_me COPY ITS SHA2
-                if( STRCMP(dp->d_name, find_me) ){
-                    find_me_hash = strdup( strSHA2(pathname) ); // IF WE FIND THE FILE SAVE ITS HASH
-                    find_me_pathname = files[nfiles].pathname; // AND SAVE ITS ABSOLUTE PATH NAME
+                if( STRCMP(dp->d_name, wanted_file) ){
+                    wanted_file_hash = strdup( strSHA2(pathname) ); // IF WE FIND THE FILE SAVE ITS HASH
+                    wanted_pathname = files[nfiles].pathname; // AND SAVE ITS ABSOLUTE PATH NAME
                 }
             }
 
@@ -118,15 +114,6 @@ void scan_dir_recur(char *dirname)
     
 //  CLOSE THE DIRECTORY
     closedir(dirp);
-}
-
-
-void print_dir_summary()
-{
-    printf("nfiles:\t%i\n", nfiles);
-    printf("nbytes:\t%i\n", nbytes);
-    printf("ufiles:\t%i\n", ufiles);
-    printf("ubytes:\t%i\n", ubytes);
 }
 
 void list_all_files(void)
