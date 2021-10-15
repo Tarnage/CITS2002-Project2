@@ -72,9 +72,18 @@ Locate and report duplicate files in, and below, a named directory.\n\
    exit(EXIT_FAILURE);
 }
 
+// ITERATES THROUGH THE HASHTABLE TO FIND DUPLICATES
+// CALLS find_duplicates FUNCTION TO FIND DUPLICATES OF A SPECIFIC FILE WHILE ITERATING
+void count_duplicates(HASHTABLE *hashtable)
+{   
+    for(int i = 0; i < HASHTABLE_SIZE; ++i){
+        find_duplicates(hashtable[i]);
+    }
+}
 
-//  DETERMINE IF A REQUIRED ITEM (A FILE) IS A DUPELICATE
-void list_find_dupe(LIST *list)
+//  DETERMINE IF A REQUIRED ITEM (A FILE) IS A DUPLICATE
+//  ITERATES THROUGH A HASHTABLE ENTRY (LIST) TO FIND DUPLICATES FOR THE FILE INSIDE THE HASHTABLE ELEMENT
+void find_duplicates(LIST *list)
 {   
     LIST *new_dupes = list_new();
     LIST *pCurrent = list_new();
@@ -274,7 +283,7 @@ int main(int argc, char *argv[])
     //TODO FREE files dont need it anymore
 
 //  CALCULATE THE DUPLICATES UNIQUE FILES AND UNIQUE BYTES
-    hashtable_count_dupes(hash_table);
+    count_duplicates(hash_table);
     ufiles = nfiles - ufiles;
     ubytes = nbytes - ubytes;
 

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "duplicates.h"
 #include "hashtable.h"
 #include "list.h"
 #include "strSHA2.h"
@@ -80,7 +81,7 @@ bool hashtable_find_hash(HASHTABLE *hashtable, char *input_hash)
 void hashtable_count_dupes(HASHTABLE *hashtable)
 {   
     for(int i = 0; i < HASHTABLE_SIZE; ++i){
-        list_find_dupe(hashtable[i]);
+        find_duplicates(hashtable[i]);
     }
 }
 

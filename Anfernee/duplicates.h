@@ -48,6 +48,12 @@ int             ubytes;  // ubytes calculated in duplicates.c
 // SCANS DIRECTORY RECURSIVELY 
 extern      void      scan_dir_recur(char *);
 
+// FIND DUPLICATES
+extern      void      find_duplicates(LIST *);
+
+// DETERMINE IF FILE IS A DUPLICATE
+extern    void        count_duplicates(HASHTABLE *);
+
 // SCANS DIRECTORY RECURSIVELY 
 extern      bool      file_ignored(const char *);
 
