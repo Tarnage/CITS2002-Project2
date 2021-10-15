@@ -24,9 +24,6 @@ extern	  bool		 hashtable_find(HASHTABLE *, char *);
 //  DETERMINE IF A REQUIRED HASH (OF A FILE) IS STORED IN A GIVEN LIST
 extern	  bool		 hashtable_find_hash(HASHTABLE *, char *);
 
-// DETERMINE IF FILE IS A DUPLICATE
-extern    void       hashtable_find_dup(HASHTABLE *);
-
 //  PRINTS HASHTABLE CONTENTS WITH GIVEN SHA2
 extern    void       hashtable_print_hash(HASHTABLE *, char *);
 

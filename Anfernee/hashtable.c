@@ -58,7 +58,7 @@ bool hashtable_find(HASHTABLE *hashtable, char *pathname)
     char *input_hash = strSHA2(pathname);
     uint32_t h	= hash_string(input_hash) % HASHTABLE_SIZE;     // choose list
     
-    return list_find_pathname(hashtable[h], pathname);
+    return list_find(hashtable[h], pathname);
 }
 
 //  DETERMINE IF A FILE STRUCT ALREADY EXISTS IN A GIVEN HASHTABLE
@@ -78,10 +78,10 @@ bool hashtable_find_hash(HASHTABLE *hashtable, char *input_hash)
 // - do we want to loop through the whole hashtable after we read in the files or during?
 // - (CHILLI) how do we link() and unlink() a duplicate file?
 // - . and .. have the same hash values. are they considered duplicate? and do we count them as files, do we count their byte sizes
-void hashtable_find_dup(HASHTABLE *hashtable)
+void hashtable_count_dupes(HASHTABLE *hashtable)
 {   
     for(int i = 0; i < HASHTABLE_SIZE; ++i){
-        list_find_dupe(hashtable[i]);
+        find_duplicates(hashtable[i]);
     }
 }
 

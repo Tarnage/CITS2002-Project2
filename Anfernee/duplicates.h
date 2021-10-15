@@ -1,62 +1,69 @@
-//#include <dirent.h>
-//#include <sys/types.h>
-//#include <errno.h>
-//#include <sys/stat.h>
 #ifndef DUPLICATES_H
 #define DUPLICATES_H
-#include "structures.h"
-
 #include <time.h>
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "structures.h"
+#include "list.h"
+#include "strSHA2.h"
+#include "hashtable.h"
+
 //  DEFINE OPTLIST HERE
 #define	OPTLIST		"f:h:aAlmq"
 
-// DEFINED in duplicates.c
-FILES           *files; 
+#ifndef STRCMP
+#define STRCMP(p, q)   strcmp(p, q) == 0
+#endif
+
+// OPTION MODES DEFINED IN duplicates.c
+bool           ignore_mode;
+
+// OPTION -f
+bool           find_file_mode;
+char          *wanted_file;
+char          *wanted_pathname;
+char          *wanted_file_hash;
+
+
+
+//OPTION -h
+int            found_hash_count;
+
+// OPTION VARIABLES
+
+// STORES ALL FILES FOUND IN DIRECTORY
+FILES         *found_file;
+
+//------------------------------------------------------------------------------------------------
+// COUNTERS FOR DEFAULT SUMMARY 
+
 int             nfiles;  // nfiles incremented in read_dir.c
 int             nbytes;  // nbytes incremented in read_dir.c
 int             ufiles;  // ufiles calculated in duplicates.c
 int             ubytes;  // ubytes calculated in duplicates.c
-int             dupe_count; // used to dynamically allocate **dupes
-LIST           *found_hash;
-int             found_hash_count; // defned in duplicates.c and incremented in list.c
-bool            find_file_mode; // 
-char           *wanted_pathname;
-char           *wanted_file_name;
-char           *wanted_hash;
-bool           ignore_mode;
-bool           quiet_mode;
-bool           list_dupes;
 
 // -----------------------------------------------------------------------------------------------
-//  THESE FUNCTIONS ARE DECLARED HERE, AND DEFINED IN read_dir.c :
-
-// READS DIRECTORY AND START COUNTS
-extern      void      scan_directory(char *);
 
 // SCANS DIRECTORY RECURSIVELY 
 extern      void      scan_dir_recur(char *);
 
+// FIND DUPLICATES
+extern      void      find_duplicates(LIST *);
+
+// DETERMINE IF FILE IS A DUPLICATE
+extern    void        count_duplicates(HASHTABLE *);
+
 // SCANS DIRECTORY RECURSIVELY 
 extern      bool      file_ignored(const char *);
-
-// PRINTS SUMMARY OF THE FILES FOUND
-extern      void      print_dir_summary(void);
 
 // PRINTS ALL FILES FOUND
 extern      void      list_all_files(void);
 
 // PRINT DUPES
-extern     void      print_dupes(LIST *list);
+extern      void      print_dupes(LIST *list);
 
 
 // -----------------------------------------------------------------------------------------------
-//  THESE FUNCTIONS ARE DECLARED HERE, AND DEFINED IN duplicates.c :
 
-extern    void      quiet_mode_summary(void);
-
-//  PRINT EACH DUPE (THE RELATIVE PATHNAME) IN A GIVEN LIST TO stdout
-extern    void      print_dupes(LIST *);
 #endif
