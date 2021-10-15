@@ -1,3 +1,7 @@
+//  CITS2002 Project 2 2021
+//  Name(s): Anfernee Pontilan Alviar, Tom Nguyen
+//  Student number(s): 22886082, 22914578
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
