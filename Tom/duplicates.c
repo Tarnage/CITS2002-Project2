@@ -159,7 +159,7 @@ void print_matching_files(HASHTABLE *incoming_table)
     int count = 0;
     while(location != NULL){
         if( (STRCMP(location->file_stats->hash, wanted_file_hash)) &&
-                (!STRCMP(wanted_pathname, location->file_stats->pathname)) ){
+                (!(STRCMP(wanted_pathname, location->file_stats->pathname))) ){
             char *pName = location->file_stats->pathname + pathname_len;
 	        printf("%s\n", pName );
             ++count;
@@ -187,7 +187,7 @@ void quiet_mode_summary()
     // IF nbytes DOES NOT EQUAL ubytes WE HAVE DUPLICATES
     // TODO COULD DO A "PROPER" CHECK FOR DUPES SINCE WE ALREADY COUNT DUPES
     if(nbytes != ubytes){
-        printf("DUPLICATE FILES FOUND\n");
+        printf("DUPLICATE FILES FOUND\n"); // dont forget to remove
         exit(EXIT_FAILURE);
     }
     printf("SUCCESS\n");

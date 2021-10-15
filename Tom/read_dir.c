@@ -70,13 +70,13 @@ void scan_dir_recur(char *dirname)
 
 //  CHECKS IF FILE IS A DIRECTORY AND RECURSIVELY READS FILES 
         if(S_ISDIR(stat_info.st_mode) && 
-            ( !STRCMP(dp->d_name, ".") ) && 
-                ( !STRCMP(dp->d_name, "..") )){
+            ( !(STRCMP(dp->d_name, ".")) ) && 
+                ( !(STRCMP(dp->d_name, "..")) )){
             scan_dir_recur(pathname);
         }
         // TODO do we always ignore dot(.) and dot-dot(..)?
         else if ( !file_ignored(dp->d_name) &&
-                    (!STRCMP(dp->d_name, ".") && !STRCMP(dp->d_name, "..")) ){
+                    (!(STRCMP(dp->d_name, ".")) && !(STRCMP(dp->d_name, ".."))) ){
             
             // FOR TESTING
             //printf("d_type: %i\tis_reg: %i\t%s\n", S_ISDIR(stat_info.st_mode), S_ISREG(stat_info.st_mode), pathname);
