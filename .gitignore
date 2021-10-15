@@ -20,3 +20,9 @@ src/strSHA2.o
 src/read_dir.o
 src/hashtable.o
 Tom/globals.o
+Anfernee/duplicates
+Anfernee/duplicates.o
+Anfernee/list.o
+Anfernee/hashtable.o
+Anfernee/read_dir.o
+Anfernee/strSHA2.o
