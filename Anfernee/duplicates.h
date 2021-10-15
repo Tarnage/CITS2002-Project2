@@ -13,7 +13,7 @@
 #define	OPTLIST		"f:h:aAlmq"
 
 #ifndef STRCMP
-#define STRCMP(p, q)   strcmp(p, q) == 0
+#define STRCMP(p, q)   (strcmp(p, q) == 0)
 #endif
 
 // OPTION MODES DEFINED IN duplicates.c

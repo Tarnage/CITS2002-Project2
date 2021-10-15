@@ -78,12 +78,7 @@ bool hashtable_find_hash(HASHTABLE *hashtable, char *input_hash)
 // - do we want to loop through the whole hashtable after we read in the files or during?
 // - (CHILLI) how do we link() and unlink() a duplicate file?
 // - . and .. have the same hash values. are they considered duplicate? and do we count them as files, do we count their byte sizes
-void hashtable_count_dupes(HASHTABLE *hashtable)
-{   
-    for(int i = 0; i < HASHTABLE_SIZE; ++i){
-        find_duplicates(hashtable[i]);
-    }
-}
+
 
 
 //  PRINTS HASHTABLE CONTENTS WITH GIVEN SHA2

@@ -290,7 +290,7 @@ int main(int argc, char *argv[])
 // PRINTS DUPE IF OPT -l IS SELECTED
     if( list_dupes ){
         for(int i = 0; i < dupe_count; ++i){
-            print_dupes(dupes[i]);
+            print_dupes(duplicates[i]);
         }
     }
 //  PRINT SUMMARY IFF quiet_mode = false
