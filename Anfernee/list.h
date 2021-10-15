@@ -2,6 +2,7 @@
 #define LIST_H
 #include "structures.h"
 #include <stdbool.h>
+
 //  A HELPFUL PREPROCESSOR MACRO TO CHECK IF ALLOCATIONS WERE SUCCESSFUL
 #define   CHECK_ALLOC(p) if(p == NULL) { perror(__func__); exit(EXIT_FAILURE); }
 // -----------------------------------------------------------------------------------------------
@@ -22,7 +23,5 @@ extern    bool       list_find_hash(LIST *, char *);
 //  PRINT EACH ITEM (A STRING) IN A GIVEN LIST TO stdout
 extern	  void	     list_print(LIST *);
 
-// GLOBAL VARIABLES 
-LIST           **dupes;
 
 #endif

@@ -32,9 +32,8 @@ int            found_hash_count;
 
 // OPTION VARIABLES
 
-// STORES ALL FILES FOUND IN DIRECTORY
-FILES         *found_file;
-
+// STORES ALL FILES IN GIVEN DIRECTORY 
+FILES         *files; 
 //------------------------------------------------------------------------------------------------
 // COUNTERS FOR DEFAULT SUMMARY 
 
