@@ -2,13 +2,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     int flags, opt;
     int nsecs, tfnd;
 
-   nsecs = 0;
+    nsecs = 0;
     tfnd = 0;
     flags = 0;
     while ((opt = getopt(argc, argv, "nt:")) != -1) {
