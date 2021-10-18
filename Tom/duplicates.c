@@ -312,6 +312,7 @@ int main(int argc, char *argv[])
                 ++files;
                 ++file_count;                   //TODO count if we actually add the file to hashtable same with ubytes
             }
+            
             nfiles = 0;                         // reset nfiles
             files = NULL;
         }
