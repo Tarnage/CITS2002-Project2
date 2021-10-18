@@ -5,6 +5,7 @@
 #include  <sys/param.h>
 #include  <string.h>
 
+
 #include "duplicates.h"
 
 #if     defined(__linux__)
@@ -16,13 +17,8 @@ extern         char *strdup(const char *s);
 #endif
 
 FILES           *files  = NULL;
-// COUNT TOTAL NUMBER OF FILES FOUND
-// int  nfiles; DEFINED IN globals.h
-// TOTAL BYTES OF ALL FILES FOUND
-// int  nbytes; DEFINED IN globals.h
-
 //  FILE IS IGNORED IF TRUE AND FILE (.) MEANING ITS A HIDDEN FILE
-//  TODO do we ignore dot(.) and dot-dot(..)
+
 bool file_ignored(const char *name)
 {   
     return (ignore_mode && (name[0] == '.'));
@@ -33,78 +29,77 @@ void scan_dir_recur(char *dirname)
 {
     DIR             *dirp;
     struct dirent   *dp;
-    
-    
 
-//  ENSURE THAT WE CAN OPEN (read-only) THE REQUIRED DIRECTORY
+    //  ENSURE THAT WE CAN OPEN (read-only) THE REQUIRED DIRECTORY
     dirp       = opendir(dirname);
-    if(dirp == NULL) {
+    
+    if (dirp == NULL) 
+    {
         perror( dirname );
         exit(EXIT_FAILURE);
     }
 
-// STORE CURRENT WORKING PATH
-// NEEDED TO CORRECTLY IDENITFY SUB-DIRECTORIES
+    // STORE CURRENT WORKING PATH
+    // NEEDED TO CORRECTLY IDENITFY SUB-DIRECTORIES
     // char            current_path[MAXPATHLEN];
     // if((getcwd(current_path, MAXPATHLEN)) == NULL)
     //     exit(EXIT_FAILURE);
     
 
-//  READ FROM THE REQUIRED DIRECTORY, UNTIL WE REACH ITS END
-    while((dp = readdir(dirp)) != NULL) {
-    
+    //  READ FROM THE REQUIRED DIRECTORY, UNTIL WE REACH ITS END
+    while((dp = readdir(dirp)) != NULL) 
+    {
         struct stat     stat_info;
         char            pathname[MAXPATHLEN];
 
-        //FOR TESTING
-        //printf("d_type: %i\tis_reg: %i\t%s\n", S_ISDIR(stat_info.st_mode), S_ISREG(stat_info.st_mode), dp->d_name);
-
-//  SENDS FORMATTED STRING TO STRING POINTER POINTED BY pathname
+        //  SENDS FORMATTED STRING TO STRING POINTER POINTED BY pathname
         sprintf(pathname, "%s/%s", dirname, dp->d_name);
 
-//  DETERMINE ATTRIBUTES OF THIS DIRECTORY ENTRY
-        if(stat(pathname, &stat_info) != 0) {
+        //  DETERMINE ATTRIBUTES OF THIS DIRECTORY ENTRY
+        if(stat(pathname, &stat_info) != 0) 
+        {
             perror( pathname );
             exit(EXIT_FAILURE);
         }
 
-//  CHECKS IF FILE IS A DIRECTORY AND RECURSIVELY READS FILES 
-        if(S_ISDIR(stat_info.st_mode) && 
-            ( !(STRCMP(dp->d_name, ".")) ) && 
-                ( !(STRCMP(dp->d_name, "..")) )){
+        //  CHECKS IF FILE IS A DIRECTORY AND RECURSIVELY READS FILES 
+        if( S_ISDIR(stat_info.st_mode) 
+            && (!STRCMP(dp->d_name, ".")) 
+            && (!STRCMP(dp->d_name, "..")) )
+        {
             scan_dir_recur(pathname);
         }
-        // TODO do we always ignore dot(.) and dot-dot(..)?
-        else if ( !file_ignored(dp->d_name) &&
-                    (!(STRCMP(dp->d_name, ".")) && !(STRCMP(dp->d_name, ".."))) ){
-            
-            // FOR TESTING
-            //printf("d_type: %i\tis_reg: %i\t%s\n", S_ISDIR(stat_info.st_mode), S_ISREG(stat_info.st_mode), pathname);
-            //TESTING
-            //printf("%s\n",getcwd(current_path, MAXPATHLEN));
 
-//  EXTEND OUR ARRAY OF STRUCTURES BY ONE ELEMENT
-            files                   = realloc(files, (nfiles+1)*sizeof(files[0]));
+        else if ( !file_ignored(dp->d_name) 
+                   && (!STRCMP(dp->d_name, ".") 
+                   && !STRCMP(dp->d_name, "..")) )
+        {
+
+            //  EXTEND OUR ARRAY OF STRUCTURES BY ONE ELEMENT
+            files = realloc(files, (nfiles+1)*sizeof(files[0]));
             CHECK_ALLOC(files);			// ensure allocation was OK
 
-//  REMEMBER (COPY) THIS ELEMENT'S RELATIVE PATHNAME
+            //  REMEMBER (COPY) THIS ELEMENT'S RELATIVE PATHNAME
             files[nfiles].pathname  = strdup(pathname);
-            CHECK_ALLOC(files[nfiles].pathname);	// ensure allocation was OK
+            CHECK_ALLOC(files[nfiles].pathname);	          // ensure allocation was OK
             files[nfiles].filename  = strdup(dp->d_name);
             CHECK_ALLOC(files[nfiles].filename);
 
-//  REMEMBER THIS ELEMENT'S MODIFICATION TIME
+            //  REMEMBER THIS ELEMENT'S MODIFICATION TIME
             files[nfiles].mtime     = stat_info.st_mtime;     // TODO maybe wont need this
             files[nfiles].bytesize  = stat_info.st_size;      // its byte size
             nbytes                 += stat_info.st_size;      // add to total bytes so far
             
 
-//  DO A CHECK IF WE ARE IN find_file_mode
-            if( find_file_mode ){
-                // IF CURRENT FILE IS find_me COPY ITS SHA2
-                if( STRCMP(dp->d_name, wanted_file) ){
+            //  DO A CHECK IF WE ARE IN find_file_mode
+            if( find_file_mode )
+            {
+                // IF CURRENT FILE IS wanted_file and we havent file a file yet COPY ITS SHA2
+                if( STRCMP(dp->d_name, wanted_file) && !w_file_found)
+                {   
                     wanted_file_hash = strdup( strSHA2(pathname) ); // IF WE FIND THE FILE SAVE ITS HASH
-                    wanted_pathname = files[nfiles].pathname; // AND SAVE ITS ABSOLUTE PATH NAME
+                    wanted_pathname = files[nfiles].pathname;       // AND SAVE ITS ABSOLUTE PATH NAME
+                    w_file_found = true;
                 }
             }
 
@@ -112,13 +107,14 @@ void scan_dir_recur(char *dirname)
         }
     }
     
-//  CLOSE THE DIRECTORY
+    //  CLOSE THE DIRECTORY
     closedir(dirp);
 }
 
-void list_all_files(void)
+void list_all_files()
 {
-    for(int n=0 ; n<nfiles ; ++n) {
+    for(int n=0 ; n<nfiles ; ++n) 
+    {
         char *english = ctime(&files[n].mtime);
 
         english[24] = '\0';		// remove pesky trailing newline

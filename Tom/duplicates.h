@@ -13,7 +13,7 @@
 #define	OPTLIST		"f:h:aAlmq"
 
 #ifndef STRCMP
-#define STRCMP(p, q)   strcmp(p, q) == 0
+#define STRCMP(p, q)   (strcmp(p, q) == 0)
 #endif
 
 // OPTION MODES DEFINED IN duplicates.c
@@ -24,6 +24,7 @@ bool           find_file_mode;
 char          *wanted_file;
 char          *wanted_pathname;
 char          *wanted_file_hash;
+bool           w_file_found;
 
 
 
@@ -32,9 +33,8 @@ int            found_hash_count;
 
 // OPTION VARIABLES
 
-// STORES ALL FILES FOUND IN DIRECTORY
-FILES         *found_file;
-
+// STORES ALL FILES IN GIVEN DIRECTORY 
+FILES         *files; 
 //------------------------------------------------------------------------------------------------
 // COUNTERS FOR DEFAULT SUMMARY 
 
@@ -47,6 +47,12 @@ int             ubytes;  // ubytes calculated in duplicates.c
 
 // SCANS DIRECTORY RECURSIVELY 
 extern      void      scan_dir_recur(char *);
+
+// FIND DUPLICATES
+extern      void      find_duplicates(LIST *);
+
+// DETERMINE IF FILE IS A DUPLICATE
+extern    void        count_duplicates(HASHTABLE *);
 
 // SCANS DIRECTORY RECURSIVELY 
 extern      bool      file_ignored(const char *);
