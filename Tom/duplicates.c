@@ -321,14 +321,6 @@ int main(int argc, char *argv[])
         ufiles = file_count - ufiles;
         ubytes = nbytes - ubytes;
 
-    // PRINTS DUPE IF OPT -l IS SELECTED
-        if( list_dupes )
-        {
-            for(int i = 0; i < dupe_count; ++i)
-            {
-                print_dupes(duplicates[i]);
-            }
-        }
     //  PRINT SUMMARY IFF quiet_mode = false
     //  TODO THINK ABOUT CONTROL FLOW
     //  IF quiet_mode == true THIS WILL EXIT PROGRAM AND NOTHING
@@ -340,6 +332,14 @@ int main(int argc, char *argv[])
         else if( list_hash )
         {
             print_matching_hash(hash_table);
+        }
+        else if( list_dupes )
+        {
+            for(int i = 0; i < dupe_count; ++i)
+            {
+                print_dupes(duplicates[i]);
+            }
+            exit(EXIT_SUCCESS);
         }
         else if( quiet_mode )
         {
