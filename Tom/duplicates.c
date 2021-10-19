@@ -40,7 +40,13 @@ FILES   *files;                         // array of all found files
 //int     pathname_len;                   // stores the length of directory path given by command-line
 //char    *iwd;                           // store the working directory give by command-line
 
-int     file_count;
+// INITILIZE COUNTERS TO ZERO
+int     file_count      = 0;
+int     files_w_dupes   = 0;
+int     nfiles          = 0;
+int     nbytes          = 0;
+int     ufiles          = 0;
+int     ubytes          = 0;
 
 void usage(char *progname) 
 {
@@ -106,7 +112,7 @@ void find_duplicates(LIST *list)
             new_dupes = list_add(new_dupes, list->file_stats);
             new_dupes = list_add(new_dupes, pCurrent->file_stats);
             ubytes += pCurrent->file_stats->bytesize;
-            ++ufiles;
+            ++files_w_dupes;
         }
         // WE CAN INCREMENT pCurrent HERE
         pCurrent = pCurrent->next;
@@ -117,8 +123,6 @@ void find_duplicates(LIST *list)
             if( STRCMP(list->file_stats->hash, pCurrent->file_stats->hash) ) 
             {
                 new_dupes = list_add(new_dupes, pCurrent->file_stats);
-                ubytes += pCurrent->file_stats->bytesize;
-                ++ufiles;
             }
             
             pCurrent = pCurrent->next;
@@ -314,16 +318,21 @@ int main(int argc, char *argv[])
                     ++file_count;
                 }
 
-                ++files;
+                ++files;                        // increment pointer
             }
             
             nfiles = 0;                         // reset nfiles
-            files = NULL;
+            for(int i = 0; i < nfiles; ++i)     // return memory to heap
+            {
+                free(files);
+                ++files;
+            }               
+            files = NULL;                       // reset pointer
         }
 
     //  CALCULATE THE DUPLICATES UNIQUE FILES AND UNIQUE BYTES
         count_duplicates(hash_table);
-        ufiles = file_count - ufiles;
+        ufiles = file_count - files_w_dupes;
         ubytes = nbytes - ubytes;
 
     //  PRINT SUMMARY IFF quiet_mode = false
