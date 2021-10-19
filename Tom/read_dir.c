@@ -88,7 +88,7 @@ void scan_dir_recur(char *dirname)
             //  REMEMBER THIS ELEMENT'S MODIFICATION TIME
             files[nfiles].mtime     = stat_info.st_mtime;     // TODO maybe wont need this
             files[nfiles].bytesize  = stat_info.st_size;      // its byte size
-            nbytes                 += stat_info.st_size;      // add to total bytes so far
+            //nbytes                 += stat_info.st_size;      // add to total bytes so far
             
 
             //  DO A CHECK IF WE ARE IN find_file_mode
@@ -103,7 +103,6 @@ void scan_dir_recur(char *dirname)
                 }
             }
 
-            ++file_count;
             ++nfiles;
         }
     }

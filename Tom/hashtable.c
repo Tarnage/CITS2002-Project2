@@ -51,6 +51,7 @@ void hashtable_add(HASHTABLE *hashtable, FILES *file_stats)
     file_stats->hash = strdup(input_hash);
     uint32_t h   = hash_string(input_hash) % HASHTABLE_SIZE; // thus, will be placed in the same index of a file with the same contents.
     hashtable[h] = list_add(hashtable[h], file_stats);
+    nbytes += file_stats->bytesize;
 }
 
 //  DETERMINE IF A FILE STRUCT ALREADY EXISTS IN A GIVEN HASHTABLE
@@ -59,7 +60,7 @@ bool hashtable_find(HASHTABLE *hashtable, char *pathname)
     // strSHA2 ONLY TAKES A VALID FILEPATH
     char *input_hash = strSHA2(pathname);
     uint32_t h	= hash_string(input_hash) % HASHTABLE_SIZE;  // choose list
-    
+
     return list_find(hashtable[h], pathname);
 }
 

@@ -307,8 +307,13 @@ int main(int argc, char *argv[])
             
             //  ADD ALL FILES TO hash_table TO CHECK FOR DUPLICATES
             for(int i = 0; i < nfiles; ++i)
-            {
-                hashtable_add(hash_table, files);
+            {   
+                if(!hashtable_find(hash_table, files->pathname)) 
+                {
+                    hashtable_add(hash_table, files);
+                    ++file_count;
+                }
+
                 ++files;
             }
             
