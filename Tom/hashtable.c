@@ -52,6 +52,7 @@ void hashtable_add(HASHTABLE *hashtable, FILES *file_stats)
     uint32_t h   = hash_string(input_hash) % HASHTABLE_SIZE; // thus, will be placed in the same index of a file with the same contents.
     hashtable[h] = list_add(hashtable[h], file_stats);
     nbytes += file_stats->bytesize;
+
 }
 
 //  DETERMINE IF A FILE STRUCT ALREADY EXISTS IN A GIVEN HASHTABLE
