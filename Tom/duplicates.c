@@ -96,7 +96,7 @@ void find_duplicates(LIST *list)
     LIST *pCurrent = list_new();
 
 //  ONLY ITERATE IF WE HAVE >= 2 ITEMS IN THE LIST
-    while( list != NULL && list->next != NULL)
+    while( list != NULL && list->next != NULL )
     {
         pCurrent = list->next;
 
@@ -310,7 +310,6 @@ int main(int argc, char *argv[])
             {
                 hashtable_add(hash_table, files);
                 ++files;
-                ++file_count;                   //TODO count if we actually add the file to hashtable same with ubytes
             }
             
             nfiles = 0;                         // reset nfiles

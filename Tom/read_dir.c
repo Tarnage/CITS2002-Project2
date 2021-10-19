@@ -103,6 +103,7 @@ void scan_dir_recur(char *dirname)
                 }
             }
 
+            ++file_count;
             ++nfiles;
         }
     }

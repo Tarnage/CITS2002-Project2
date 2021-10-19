@@ -31,8 +31,6 @@ bool           w_file_found;
 //OPTION -h
 int            found_hash_count;
 
-// OPTION VARIABLES
-
 // STORES ALL FILES IN GIVEN DIRECTORY 
 FILES         *files; 
 //------------------------------------------------------------------------------------------------
@@ -42,6 +40,8 @@ int             nfiles;  // nfiles incremented in read_dir.c
 int             nbytes;  // nbytes incremented in read_dir.c
 int             ufiles;  // ufiles calculated in duplicates.c
 int             ubytes;  // ubytes calculated in duplicates.c
+int             file_count;  // file_count incremented in read_dir.c
+
 
 // -----------------------------------------------------------------------------------------------
 
