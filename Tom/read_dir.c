@@ -13,7 +13,7 @@ extern         char *strdup(const char *s);
 #endif
 
 #ifndef STRCMP
-#define STRCMP(p, q)   strcmp(p, q) == 0
+#define STRCMP(p, q)   (strcmp(p, q) == 0)
 #endif
 
 FILES           *files  = NULL;
