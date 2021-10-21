@@ -12,10 +12,6 @@
 extern         char *strdup(const char *s);
 #endif
 
-#ifndef STRCMP
-#define STRCMP(p, q)   (strcmp(p, q) == 0)
-#endif
-
 FILES           *files  = NULL;
 //  FILE IS IGNORED IF TRUE AND FILE (.) MEANING ITS A HIDDEN FILE
 
@@ -85,11 +81,9 @@ void scan_dir_recur(char *dirname)
             files[nfiles].filename  = strdup(dp->d_name);
             CHECK_ALLOC(files[nfiles].filename);
 
-            //  REMEMBER THIS ELEMENT'S MODIFICATION TIME
-            files[nfiles].mtime     = stat_info.st_mtime;     // TODO maybe wont need this
+            //  REMEMBER THIS ELEMENT'S BYTE SIZE
             files[nfiles].bytesize  = stat_info.st_size;      // its byte size
             //nbytes                 += stat_info.st_size;      // add to total bytes so far
-            
 
             //  DO A CHECK IF WE ARE IN find_file_mode
             if( find_file_mode )
@@ -115,9 +109,6 @@ void list_all_files()
 {
     for(int n=0 ; n<nfiles ; ++n) 
     {
-        char *english = ctime(&files[n].mtime);
-
-        english[24] = '\0';		// remove pesky trailing newline
-        printf( "%s\t%i\t%s\n", english, files[n].bytesize, files[n].pathname );
+        printf( "%i\t%s\n", files[n].bytesize, files[n].pathname );
     }
 }
