@@ -10,10 +10,6 @@
 extern	char	*strdup(char *string);
 #endif
 
-#ifndef STRCMP
-#define STRCMP(p, q)   (strcmp(p, q) == 0)
-#endif
-
 //  ---------------------------------------------------------------------
 
 //  'CREATE' A NEW, EMPTY LIST - JUST A NULL POINTER
