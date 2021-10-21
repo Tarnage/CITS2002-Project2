@@ -6,7 +6,7 @@
 // DEFINED TYPEDEFS
 
 // DATA TYPE FOR READING IN FILES
-typedef struct _files{
+typedef struct _files {
     char           *pathname;
     char           *filename;
     char           *hash;
