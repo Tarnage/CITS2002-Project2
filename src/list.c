@@ -11,7 +11,7 @@ extern	char	*strdup(char *string);
 #endif
 
 #ifndef STRCMP
-#define STRCMP(p, q)   strcmp(p, q) == 0
+#define STRCMP(p, q)   (strcmp(p, q) == 0)
 #endif
 
 //  ---------------------------------------------------------------------

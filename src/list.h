@@ -5,6 +5,11 @@
 
 //  A HELPFUL PREPROCESSOR MACRO TO CHECK IF ALLOCATIONS WERE SUCCESSFUL
 #define   CHECK_ALLOC(p) if(p == NULL) { perror(__func__); exit(EXIT_FAILURE); }
+
+#ifndef STRCMP
+#define STRCMP(p, q)   (strcmp(p, q) == 0)
+#endif
+
 // -----------------------------------------------------------------------------------------------
 //  THESE FUNCTIONS ARE DECLARED HERE, AND DEFINED IN list.c :
 
