@@ -1,6 +1,6 @@
 //  CITS2002 Project 2 2021
-//  Name(s): Anfernee Pontilan Alviar, Tom Nguyen
-//  Student number(s): 22886082, 22914578
+//  Name(s):            Anfernee Pontilan Alviar,   Tom Nguyen
+//  Student number(s):  <22886082>,                 <22914578>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -37,8 +37,6 @@ int     dupe_count;                     // used to dynamically allocate **dupes
 LIST    **duplicates        = NULL;     // list of all duplicates found
 int     found_hash_count;               // count of all duplicate files found
 FILES   *files;                         // array of all found files
-//int     pathname_len;                   // stores the length of directory path given by command-line
-//char    *iwd;                           // store the working directory give by command-line
 
 // INITILIZE COUNTERS TO ZERO
 int     file_count      = 0;
@@ -50,7 +48,6 @@ int     ubytes          = 0;
 
 void usage(char *progname) 
 {
-   //fprintf(stderr, USAGE_FMT, progname);
    printf ("Usage: %s [OPTION]... [FILE]...\n", progname);
 
       fputs (("\
@@ -61,7 +58,7 @@ Locate and report duplicate files in, and below, a named directory.\n\
       fputs (("\
   -a,       do not ignore entries starting with .\n\
 \n\
-  -A,       advanced mode\n\
+  -A,       advanced mode. Only Advanced task 1. implemented.\n\
 \n\
   -f,       find and list, one per line, the relative pathnames of all files whose SHA2\n\
             hash matches that of the indicated file. The name of the indicated file is not listed.\n\
@@ -73,7 +70,7 @@ Locate and report duplicate files in, and below, a named directory.\n\
   -l,       duplicates lists all duplicate files found. Each line of output consists of the relative pathnames of two or more files\n\
             that are duplicates of each other. The pathnames of duplicate files (on the same line line) must be separated by the TAB character.\n\
 \n\
-  -m,       duplicates minimizes the total number of bytes required to store all files' data by modifying the directory structure being considered.\n\
+  -m,       Not implemented.\n\
 \n\
   -q,       duplicates executes quietly, simply testing if the named directory contains any duplicate files.\n\
             duplicates -q produces no output at all, simply terminating with EXIT_SUCCESS if there are no duplicates\n\
@@ -237,10 +234,10 @@ void quiet_mode_summary()
 
 void print_dir_summary()
 {
-    printf("nfiles:\t%i\n", file_count);
-    printf("nbytes:\t%i\n", nbytes);
-    printf("ufiles:\t%i\n", ufiles);
-    printf("ubytes:\t%i\n", ubytes);
+    printf("%i\n", file_count);
+    printf("%i\n", nbytes);
+    printf("%i\n", ufiles);
+    printf("%i\n", ubytes);
 }
 
 
@@ -261,32 +258,25 @@ int main(int argc, char *argv[])
             switch (opt) 
             {
                 case 'a':
-                    printf("Option [-a] was selected\n");
                     ignore_mode = false;
                     break;
                 case 'A':
-                    printf("Option [-A] was selected\n");
                     exit(EXIT_SUCCESS);
                     break;
                 case 'f':
-                    printf("Option [-f] was selected\n");
                     find_file_mode = true;
                     wanted_file = optarg;
                     break;
                 case 'h':
-                    printf("Option [-h] was selected\n");
                     list_hash = true;
                     input_hash = optarg;
                     break;
                 case 'l':
-                    printf("Option [-l] was selected\n");
                     list_dupes = true;
                     break;
                 case 'm':
-                    printf("Option [-m] was selected\n");
-                    break;
+                    exit(EXIT_FAILURE);         // not implemented
                 case 'q':
-                    printf("Option [-q] was selected\n");
                     quiet_mode = true;
                     break;
                 default: /* '?' */
@@ -294,12 +284,6 @@ int main(int argc, char *argv[])
                     exit(EXIT_FAILURE);
             }
         }
-
-    //  SAVE INCOMING WORKING DIR
-        //iwd = argv[optind];
-    // SAVE THE SIZE OF THE PATHNAME TO GET THE RELATIVE PATHNAME OF A FILE
-        //pathname_len = strlen(iwd);
-
 
     //  INITIALIZE HASHTABLE FOR CHECKING DUPLICATES
         HASHTABLE  *hash_table = hashtable_new();
@@ -335,10 +319,7 @@ int main(int argc, char *argv[])
         ufiles = file_count - files_w_dupes;
         ubytes = nbytes - ubytes;
 
-    //  PRINT SUMMARY IFF quiet_mode = false
-    //  TODO THINK ABOUT CONTROL FLOW
-    //  IF quiet_mode == true THIS WILL EXIT PROGRAM AND NOTHING
-    //  BELOW WILL EXECUTE. ie. THINK ABOUT - IF WE WANT MULTIPLE OPTIONS TO EXECUTE 
+    //  TODO ADD COMMENTS HERE!!
         if( find_file_mode )
         {
             print_matching_files(hash_table);
@@ -363,7 +344,7 @@ int main(int argc, char *argv[])
         {
             print_dir_summary();
         }
-// //  TERMINATE PROGRAM, INDICATING SUCCESS
+    //  TERMINATE PROGRAM, INDICATING SUCCESS
         exit(EXIT_SUCCESS);
     }
 
