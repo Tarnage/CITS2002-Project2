@@ -1,7 +1,6 @@
 //DECLARE STRUCTURES
 #ifndef STRUCTURES_H
 #define STRUCTURES_H
-#include <time.h>
 // -----------------------------------------------------------------------------------------------
 // DEFINED TYPEDEFS
 
@@ -11,7 +10,6 @@ typedef struct _files {
     char           *filename;
     char           *hash;
     int             bytesize;
-    time_t          mtime;
 } FILES;
 
 typedef struct _list {
