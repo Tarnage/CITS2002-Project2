@@ -27,3 +27,4 @@ Anfernee/hashtable.o
 Anfernee/read_dir.o
 Anfernee/strSHA2.o
 Anfernee/duplicates
+.DS_Store
