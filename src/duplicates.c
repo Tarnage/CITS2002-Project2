@@ -201,7 +201,6 @@ void print_matching_files(HASHTABLE *incoming_table)
             exit(EXIT_SUCCESS);
         }
     }
-
     exit(EXIT_FAILURE);
 }
 
@@ -291,8 +290,9 @@ int main(int argc, char *argv[])
         for(int i = optind; i < argc; ++i)
         {
             //  START THE SEARCH FOR ALL FILES
+
             scan_dir_recur(argv[i]);
-            
+
             //  ADD ALL FILES TO hash_table TO CHECK FOR DUPLICATES
             for(int i = 0; i < nfiles; ++i)
             {   
@@ -304,16 +304,12 @@ int main(int argc, char *argv[])
 
                 ++files;                        // increment pointer
             }
-            
-            nfiles = 0;                         // reset nfiles
-            for(int i = 0; i < nfiles; ++i)     // return memory to heap
-            {
-                free(files);
-                ++files;
-            }               
-            files = NULL;                       // reset pointer
-        }
 
+            files = NULL;                       // reset pointer
+
+            nfiles = 0;                         // reset nfiles
+        }
+        
     //  CALCULATE THE DUPLICATES UNIQUE FILES AND UNIQUE BYTES
         count_duplicates(hash_table);
         ufiles = file_count - files_w_dupes;
@@ -344,8 +340,6 @@ int main(int argc, char *argv[])
         {
             print_dir_summary();
         }
-    //  TERMINATE PROGRAM, INDICATING SUCCESS
-        exit(EXIT_SUCCESS);
     }
 
     return 0;
