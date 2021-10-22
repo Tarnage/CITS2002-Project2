@@ -39,16 +39,20 @@ bool list_find(LIST *list, char *incoming_pathname)
 //  ALLOCATE SPACE FOR A NEW LIST ITEM, TESTING THAT ALLOCATION SUCCEEDS
 LIST *list_new_item(FILES *new_file)
 {
+    // ALLOCATE MEMORY FOR A NEW LIST ITEM
     LIST *new  = malloc( sizeof(LIST) );
     CHECK_ALLOC(new);
 
+    // ASSIGN FILE_STATS TO THE NEW LIST ITEM CREATED
     new->file_stats = new_file;
     CHECK_ALLOC(new->file_stats);
 
+    // SET REFERENCE TO NEXT LIST POINTER AS NULL
     new->next = NULL;
     
     return new;
 }
+
 
 //  ADD A NEW (STRING) ITEM TO AN EXISTING LIST
 LIST *list_add(LIST *list, FILES *new_file)
@@ -67,7 +71,9 @@ LIST *list_add(LIST *list, FILES *new_file)
     }
 }
 
+
 //  PRINT EACH ITEM (A STRING) IN A GIVEN LIST TO stdout
+//  NOT USED - HELPER FUNCTION
 void list_print(LIST *list)
 {
     if(list != NULL) 

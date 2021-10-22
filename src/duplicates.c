@@ -130,6 +130,7 @@ void find_duplicates(LIST *list)
             
     }
 
+    // IF A DUPLICATE LIST WAS MADE IN THE PREVIOUS LOOP
     if( new_dupes != NULL )
     {
         // realloc dupes array
@@ -250,7 +251,7 @@ int main(int argc, char *argv[])
     else 
     {
         int		opt;
-    //  PROCESS COMMAND-LINE OPTIONS
+        //  PROCESS COMMAND-LINE OPTIONS
         opterr	= 0;
         while((opt = getopt(argc, argv, OPTLIST)) != -1) 
         {
@@ -287,15 +288,16 @@ int main(int argc, char *argv[])
     //  INITIALIZE HASHTABLE FOR CHECKING DUPLICATES
         HASHTABLE  *hash_table = hashtable_new();
 
+        // LOOP THROUGH DIRECTORY ARGUMENTS IN THE COMMAND-LINE
         for(int i = optind; i < argc; ++i)
         {
             //  START THE SEARCH FOR ALL FILES
-
             scan_dir_recur(argv[i]);
 
             //  ADD ALL FILES TO hash_table TO CHECK FOR DUPLICATES
             for(int i = 0; i < nfiles; ++i)
             {   
+                // IF NOT FOUND, ADD TO HASHTABLE
                 if(!hashtable_find(hash_table, files->pathname)) 
                 {
                     hashtable_add(hash_table, files);
@@ -305,25 +307,31 @@ int main(int argc, char *argv[])
                 ++files;                        // increment pointer
             }
 
+            // SET POINTER TO NULL TO REALLOCATE NEW MEMORY FOR NEXT DIRECTORY (IF IN CMD-LINE)
             files = NULL;                       // reset pointer
 
             nfiles = 0;                         // reset nfiles
         }
         
-    //  CALCULATE THE DUPLICATES UNIQUE FILES AND UNIQUE BYTES
+        //  CALCULATE THE DUPLICATES UNIQUE FILES AND UNIQUE BYTES
         count_duplicates(hash_table);
         ufiles = file_count - files_w_dupes;
         ubytes = nbytes - ubytes;
 
-    //  TODO ADD COMMENTS HERE!!
+        // CHECK WHAT OPTIONS ARE MET (IF NOT CONTRADICTORY)
+        
+        // FIND THE FILE MATCHING THE INPUT FILE FROM THE COMMAND-LINE
         if( find_file_mode )
         {
+            // ITERATE THROUGH HASH TABLE, FIND FILE MATCHING WITH ARGUMENT AFTER -f
             print_matching_files(hash_table);
         }
+        // FIND THE HASH MATCHING THE INPUT HASH FROM THE COMMAND-LINE
         else if( list_hash )
         {
             print_matching_hash(hash_table);
         }
+        // LIST FOUND DUPLICATES   
         else if( list_dupes )
         {
             for(int i = 0; i < dupe_count; ++i)
@@ -332,10 +340,14 @@ int main(int argc, char *argv[])
             }
             exit(EXIT_SUCCESS);
         }
+        // DO NOT PRINT ufiles, nfiles, etc.
+        // EXIT_SUCCESS IF NO DUPLICATES FOUND
+        // EXIT_FAILURE OTHERWISE 
         else if( quiet_mode )
         {
             quiet_mode_summary();
         }
+        // PRINT SUMMARY 
         else 
         {
             print_dir_summary();

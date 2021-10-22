@@ -17,8 +17,6 @@ extern	char	*strdup(char *string);
 
 //  FUNCTION hash_string() ACCEPTS A STRING PARAMETER,
 //  AND RETURNS AN UNSIGNED 32-BIT INTEGER AS ITS RESULT
-//
-//  see:  https://en.cppreference.com/w/c/types/integer
 uint32_t hash_string(char *string)
 {
     uint32_t hash = 0;
@@ -46,12 +44,12 @@ HASHTABLE *hashtable_new()
 void hashtable_add(HASHTABLE *hashtable, FILES *file_stats)
 {   
     // strSHA2 ONLY TAKES A VALID FILEPATH
-    char *input_hash = strSHA2(file_stats->pathname);  // hash the filename and use it to get the index if hash is the same the contents is the same
-    // copy the hash to the file stats
+    char *input_hash = strSHA2(file_stats->pathname);  // hash the file contents
+    // copy the hash to file_stats 
     file_stats->hash = strdup(input_hash);
     uint32_t h   = hash_string(input_hash) % HASHTABLE_SIZE; // thus, will be placed in the same index of a file with the same contents.
-    hashtable[h] = list_add(hashtable[h], file_stats);
-    nbytes += file_stats->bytesize;
+    hashtable[h] = list_add(hashtable[h], file_stats); // add to a list
+    nbytes += file_stats->bytesize; // increment the total number of bytes by the size of the file 
 
 }
 
@@ -59,28 +57,30 @@ void hashtable_add(HASHTABLE *hashtable, FILES *file_stats)
 bool hashtable_find(HASHTABLE *hashtable, char *pathname)
 {   
     // strSHA2 ONLY TAKES A VALID FILEPATH
-    char *input_hash = strSHA2(pathname);
-    uint32_t h	= hash_string(input_hash) % HASHTABLE_SIZE;  // choose list
+    char *input_hash = strSHA2(pathname); // hash the file contents
+    uint32_t h	= hash_string(input_hash) % HASHTABLE_SIZE;  // find index in hashtable
 
-    return list_find(hashtable[h], pathname);
+    return list_find(hashtable[h], pathname); // check if file with corresponding filename exists in list
 }
 
 //  DETERMINE IF A FILE STRUCT ALREADY EXISTS IN A GIVEN HASHTABLE
 bool hashtable_find_hash(HASHTABLE *hashtable, char *input_hash)
 {   
-    uint32_t h	= hash_string(input_hash) % HASHTABLE_SIZE;  // choose list
+    uint32_t h	= hash_string(input_hash) % HASHTABLE_SIZE;  // find index of hash
     
-    return list_find_hash(hashtable[h], input_hash);
+    return list_find_hash(hashtable[h], input_hash); // check if hash exists in the list 
 }
 
 //  PRINTS HASHTABLE CONTENTS WITH GIVEN SHA2
+//  HELPER FUNCTION - NOT USED
 void hashtable_print_hash(HASHTABLE *hashtable, char *input_hash)
 {
-    uint32_t h	= hash_string(input_hash) % HASHTABLE_SIZE;
+    uint32_t h	= hash_string(input_hash) % HASHTABLE_SIZE; 
     list_print(hashtable[h]);
 }
 
 //  PRINTS HASHTABLE CONTENTS
+//  HELPER FUNCTION - NOT USED
 void hashtable_print_all(HASHTABLE *hashtable)
 {
     for(int i = 0; i < HASHTABLE_SIZE; ++i)

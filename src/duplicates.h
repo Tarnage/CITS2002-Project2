@@ -1,9 +1,7 @@
 #ifndef DUPLICATES_H
 #define DUPLICATES_H
-#include <time.h>
 #include <stdbool.h>
 #include <stdint.h>
-
 #include "structures.h"
 #include "list.h"
 #include "strSHA2.h"

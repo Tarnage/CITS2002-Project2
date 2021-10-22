@@ -35,13 +35,6 @@ void scan_dir_recur(char *dirname)
         exit(EXIT_FAILURE);
     }
 
-    // STORE CURRENT WORKING PATH
-    // NEEDED TO CORRECTLY IDENITFY SUB-DIRECTORIES
-    // char            current_path[MAXPATHLEN];
-    // if((getcwd(current_path, MAXPATHLEN)) == NULL)
-    //     exit(EXIT_FAILURE);
-    
-
     //  READ FROM THE REQUIRED DIRECTORY, UNTIL WE REACH ITS END
     while((dp = readdir(dirp)) != NULL) 
     {
@@ -83,12 +76,11 @@ void scan_dir_recur(char *dirname)
 
             //  REMEMBER THIS ELEMENT'S BYTE SIZE
             files[nfiles].bytesize  = stat_info.st_size;      // its byte size
-            //nbytes                 += stat_info.st_size;      // add to total bytes so far
 
-            //  DO A CHECK IF WE ARE IN find_file_mode
+            //  DO A CHECK IF WE ARE IN find_file_mode (-f)
             if( find_file_mode )
             {
-                // IF CURRENT FILE IS wanted_file and we havent file a file yet COPY ITS SHA2
+                // IF CURRENT FILE IS wanted_file and we haven't found a file yet COPY ITS SHA2
                 if( STRCMP(dp->d_name, wanted_file) && !w_file_found)
                 {   
                     wanted_file_hash = strdup( strSHA2(pathname) ); // IF WE FIND THE FILE SAVE ITS HASH

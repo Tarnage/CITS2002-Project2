@@ -12,6 +12,7 @@ typedef struct _files {
     int             bytesize;
 } FILES;
 
+// LINKED LIST (USED BY list.c)
 typedef struct _list {
      FILES          *file_stats;
      struct _list   *next;
