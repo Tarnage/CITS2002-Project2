@@ -51,7 +51,7 @@ void usage(char *progname)
    printf ("Usage: %s [OPTION]... [FILE]...\n", progname);
 
       fputs (("\
-Locate and report duplicate files in, and below, a named directory.\n\
+Locate and report duplicate files in, and below, any number of named directory.\n\
 \n\
 "), stdout);
 
