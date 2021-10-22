@@ -264,7 +264,14 @@ int main(int argc, char *argv[])
                     exit(EXIT_SUCCESS);
                     break;
                 case 'f':
+<<<<<<< HEAD
                     if(argc < 4)
+=======
+                    find_file_mode = true;
+                    wanted_file = optarg;
+                    // CHECK IF A FILENAME WAS PROVIDED
+                    if(optind != 3)
+>>>>>>> 5bc751f6bac2a03e2e722aef764bb734f74a39c1
                     {
                         usage(argv[0]);
                     }
@@ -272,7 +279,14 @@ int main(int argc, char *argv[])
                     wanted_file = optarg;
                     break;
                 case 'h':
+<<<<<<< HEAD
                     if(argc < 4)
+=======
+                    list_hash = true;
+                    input_hash = optarg;
+                    // CHECK IF A HASH WAS PROVIDED
+                    if(optind != 3)
+>>>>>>> 5bc751f6bac2a03e2e722aef764bb734f74a39c1
                     {
                         usage(argv[0]);
                     }
