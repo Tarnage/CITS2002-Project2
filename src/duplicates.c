@@ -266,10 +266,18 @@ int main(int argc, char *argv[])
                 case 'f':
                     find_file_mode = true;
                     wanted_file = optarg;
+                    if(optind != 3)
+                    {
+                        usage(argv[0]);
+                    }
                     break;
                 case 'h':
                     list_hash = true;
                     input_hash = optarg;
+                    if(optind != 3)
+                    {
+                        usage(argv[0]);
+                    }
                     break;
                 case 'l':
                     list_dupes = true;
